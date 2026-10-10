@@ -51,6 +51,50 @@
             padding: 96px 28px 64px;
         }
 
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 26px;
+        }
+
+        .page-overline {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 12px;
+            color: var(--accent-dark);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.9px;
+            text-transform: uppercase;
+        }
+
+        .page-overline::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 9px rgba(255,48,48,.8);
+        }
+
+        .page-title {
+            color: var(--text-strong);
+            font-size: clamp(32px, 5vw, 46px);
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .page-description {
+            margin-top: 11px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
         /* =========================================================
            BACK BUTTON
         ========================================================= */
@@ -60,7 +104,7 @@
             align-items: center;
             gap: 8px;
 
-            margin-bottom: 22px;
+            margin-bottom: 4px;
             padding: 10px 15px;
 
             border: 1px solid var(--border);
@@ -112,7 +156,7 @@
 
             border: 1px solid var(--border);
             border-radius: 22px;
-            padding: 28px;
+            padding: 29px;
             margin-bottom: 34px;
 
             box-shadow:
@@ -146,7 +190,19 @@
         .user-overline {
             position: relative;
             z-index: 1;
-            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .user-overline::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 9px rgba(255,48,48,.55);
         }
 
         .user-header-top {
@@ -162,7 +218,7 @@
             width: 72px;
             height: 72px;
             border: 1px solid rgba(255,255,255,.16);
-            border-radius: 22px;
+            border-radius: 24px;
 
             background:
                 radial-gradient(circle at 25% 15%, rgba(255,255,255,.28), transparent 38%),
@@ -178,6 +234,7 @@
             letter-spacing: -1px;
 
             box-shadow: 0 12px 28px rgba(255,48,48,.2), inset 0 1px 0 rgba(255,255,255,.16);
+            position: relative;
         }
 
         .user-info {
@@ -241,11 +298,36 @@
         }
 
         .user-stat {
+            position: relative;
+            overflow: hidden;
             padding: 15px 17px;
             border-radius: 15px;
             border: 1px solid var(--border);
             background: rgba(255,255,255,.025);
             transition: transform .2s ease, border-color .2s ease, background .2s ease;
+        }
+
+        .user-stat::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 16px;
+            width: 28px;
+            height: 2px;
+            background: var(--stat-accent, var(--accent));
+            box-shadow: 0 0 12px var(--stat-accent, var(--accent));
+        }
+
+        .user-stat:nth-child(2) {
+            --stat-accent: #28e98b;
+        }
+
+        .user-stat:nth-child(3) {
+            --stat-accent: #67b7ff;
+        }
+
+        .user-stat:nth-child(4) {
+            --stat-accent: #ff6868;
         }
 
         .user-stat:hover {
@@ -268,6 +350,7 @@
             font-weight: 850;
             margin-top: 6px;
             letter-spacing: -.6px;
+            font-variant-numeric: tabular-nums;
         }
 
         /* =========================================================
@@ -284,7 +367,15 @@
         }
 
         .activity-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
             margin: 0 0 18px;
+        }
+
+        .activity-heading-copy {
+            min-width: 0;
         }
 
         .activity-overline {
@@ -294,6 +385,33 @@
         .activity-description {
             color: var(--muted);
             font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .activity-count {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            padding: 8px 11px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: rgba(255,255,255,.025);
+            color: var(--text);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .activity-count::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(255,48,48,.65);
         }
 
         /* =========================================================
@@ -339,10 +457,24 @@
         }
 
         .activity-model {
+            position: relative;
+            padding-left: 13px;
             color: var(--text-strong);
             font-size: 14px;
             font-weight: 800;
             word-break: break-word;
+        }
+
+        .activity-model::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            bottom: 3px;
+            left: 0;
+            width: 2px;
+            border-radius: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 9px rgba(255,48,48,.55);
         }
 
         .activity-provider {
@@ -353,12 +485,24 @@
 
         .activity-status {
             flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             padding: 5px 10px;
             border-radius: 100px;
             font-size: 9px;
             font-weight: 850;
             letter-spacing: .5px;
             text-transform: uppercase;
+        }
+
+        .activity-status::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 7px currentColor;
         }
 
         .activity-status.processing,
@@ -409,6 +553,7 @@
             font-weight: 700;
             margin-top: 4px;
             word-break: break-word;
+            font-variant-numeric: tabular-nums;
         }
 
         /* =========================================================
@@ -642,6 +787,18 @@
             main {
                 padding: 85px 15px 35px;
             }
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 21px;
+            }
+            .page-title {
+                letter-spacing: -1.5px;
+            }
+            .back-link {
+                margin-bottom: 0;
+            }
             .user-header {
                 padding: 22px 18px;
             }
@@ -660,6 +817,16 @@
             }
             .activity-item-head {
                 flex-direction: column;
+            }
+            .activity-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .activity-count {
+                margin: 0;
+                padding: 7px 9px;
+                font-size: 9px;
             }
             .user-header-top {
                 gap: 14px;
@@ -695,17 +862,17 @@
 
     <main>
 
-        <!-- =====================================================
-             BACK LINK
-        ====================================================== -->
-
-        <a
-            class="back-link"
-            href="../dashboard/index.html"
-        >
-            <span class="back-link-icon">←</span>
-            Kembali ke Dashboard
-        </a>
+        <header class="page-header">
+            <div>
+                <div class="page-overline">GEN-Z.AI / Administration</div>
+                <h1 class="page-title">User Activity</h1>
+                <p class="page-description">Ringkasan profil dan aktivitas generasi pengguna.</p>
+            </div>
+            <a class="back-link" href="../dashboard/index.html">
+                <span class="back-link-icon">←</span>
+                Kembali ke Dashboard
+            </a>
+        </header>
 
         <!-- =====================================================
              USER HEADER
@@ -723,9 +890,9 @@
 
                 <div class="user-info">
 
-                    <h1 class="user-email" id="userEmail">
+                    <h2 class="user-email" id="userEmail">
                         Memuat…
-                    </h1>
+                    </h2>
 
                     <div class="user-name" id="userName">
                         —
@@ -750,9 +917,12 @@
         ====================================================== -->
 
         <div class="activity-heading">
-            <div class="activity-overline">User insights</div>
-            <h2 class="section-title">Generation Activity</h2>
-            <div class="activity-description">Riwayat penggunaan model dan status generasi terbaru.</div>
+            <div class="activity-heading-copy">
+                <div class="activity-overline">User insights</div>
+                <h2 class="section-title">Generation Activity</h2>
+                <div class="activity-description">Riwayat penggunaan model dan status generasi terbaru.</div>
+            </div>
+            <span class="activity-count" id="activityCount" aria-live="polite">Memuat aktivitas</span>
         </div>
 
         <div class="activity-list" id="activityList">
@@ -1063,6 +1233,10 @@
             function renderHistory() {
 
                 var list = document.getElementById("activityList");
+                var count = document.getElementById("activityCount");
+                if (count) {
+                    count.textContent = state.history.length + " aktivitas";
+                }
                 if (!list) return;
 
                 if (!state.history.length) {
@@ -1296,6 +1470,9 @@
 
                 var header = document.getElementById("userHeader");
                 if (header) header.style.display = "none";
+
+                var count = document.getElementById("activityCount");
+                if (count) count.textContent = "Tidak tersedia";
 
                 var list = document.getElementById("activityList");
                 if (list) {
