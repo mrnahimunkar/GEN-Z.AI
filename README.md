@@ -167,11 +167,14 @@ frontend dari `dist/` dan membungkus endpoint API yang sebelumnya menggunakan
 format handler Vercel. Pertahankan deployment Vercel sampai semua endpoint dan
 provider sudah diuji di Cloudflare.
 
-1. Hubungkan repository GitHub ke Worker `genzai` melalui Git integration /
-   Workers Builds.
-2. Gunakan build command `node scripts/build-cloudflare-pages.mjs`, lalu deploy
-   dengan `npx wrangler deploy`. Wrangler membaca `main` dan konfigurasi aset
-   dari `wrangler.toml`; jangan gunakan `wrangler pages deploy` untuk Worker ini.
+1. Tambahkan GitHub Actions repository secret `CLOUDFLARE_API_TOKEN` dengan
+   token yang memiliki izin deploy Workers pada akun Cloudflare yang ditetapkan
+   di `wrangler.toml`. Jangan masukkan token ke file repository.
+2. Setiap push ke branch `main` akan menjalankan
+   `.github/workflows/deploy-cloudflare-worker.yml`: workflow membangun aset
+   dengan `node scripts/build-cloudflare-pages.mjs` lalu deploy menggunakan
+   `npx wrangler@4 deploy`. Workflow juga dapat dijalankan manual dari tab
+   Actions. Jangan gunakan `wrangler pages deploy` untuk Worker ini.
 3. Untuk indikator online lintas perangkat pada dashboard admin, jalankan
    `supabase/user-presence.sql` di Supabase SQL Editor. Sesi mengirim heartbeat
    setiap 20 detik; akun dianggap offline setelah 90 detik tanpa heartbeat.
@@ -190,8 +193,8 @@ provider sudah diuji di Cloudflare.
 
 `wrangler.toml` menetapkan entry point Worker, kompatibilitas runtime Node, serta
 aset statis. Jangan commit secret atau menyalin `.env.local` ke output; masukkan
-nilai secret langsung melalui pengaturan Cloudflare. Perubahan yang di-push ke
-branch terhubung akan memicu build otomatis melalui Git integration.
+nilai secret langsung melalui pengaturan Cloudflare. Push ke `main` memicu
+GitHub Actions untuk build dan deploy Worker.
 
 ### Local Development
 
