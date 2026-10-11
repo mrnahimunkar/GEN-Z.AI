@@ -1852,3 +1852,114 @@ footer span {
         grid-template-columns: 1fr;
     }
 }
+
+:root {
+    --gza-red: #ff9f1c;
+    --gza-red-soft: rgba(255,159,28,.10);
+    --gza-red-line: rgba(255,159,28,.28);
+    --accent: #ff9f1c;
+    --accent-2: #ffb547;
+    --accent-dark: #ffb547;
+}
+
+body {
+    background:
+        radial-gradient(900px 500px at 50% -160px, rgba(255,159,28,.075), transparent 70%),
+        radial-gradient(600px 500px at 100% 45%, rgba(255,159,28,.025), transparent 70%),
+        #050608;
+}
+
+#dashboardHeader::before {
+    background: linear-gradient(90deg, #ff9f1c, transparent);
+    box-shadow: 0 0 16px rgba(255,159,28,.65);
+}
+
+#dashboardHeader::after {
+    background: rgba(255,159,28,.035);
+}
+
+#dashboardHeader .eyebrow {
+    color: #ffb547;
+}
+
+#dashboardHeader .eyebrow::before {
+    box-shadow: 0 0 7px #ff9f1c, 0 0 15px rgba(255,159,28,.45);
+}
+
+#roleBadge {
+    border-color: rgba(255,159,28,.25);
+    color: #ffb547;
+    background: rgba(255,159,28,.055);
+}
+
+#systemStatus {
+    background: linear-gradient(
+        110deg,
+        rgba(255,159,28,.065),
+        rgba(255,255,255,.018) 50%,
+        rgba(255,255,255,.01)
+    );
+}
+
+#systemStatus::before,
+.hero::before {
+    background: #ff9f1c;
+    box-shadow: 0 0 15px rgba(255,159,28,.6);
+}
+
+.stat-card::before {
+    background: linear-gradient(90deg, transparent, rgba(255,159,28,.55), transparent);
+}
+
+.stat-card:hover {
+    border-color: rgba(255,159,28,.18);
+}
+
+.account-card:hover {
+    border-color: rgba(255,159,28,.20);
+}
+
+.account-card:not(:has(.account-light.active))::before {
+    background: linear-gradient(90deg, transparent, rgba(255,159,28,.5), transparent);
+}
+
+.account-role,
+.account-card .account-role,
+#accountActivityGrid .account-role {
+    border-color: rgba(255,159,28,.2);
+    color: #ffb547;
+    background: rgba(255,159,28,.045);
+}
+
+.account-search input:focus {
+    border-color: rgba(255,159,28,.55);
+    box-shadow: 0 0 0 3px rgba(255,159,28,.12);
+}
+
+#activityModal .activity-modal-panel {
+    box-shadow:
+        0 40px 120px rgba(0,0,0,.72),
+        0 0 50px rgba(255,159,28,.045),
+        inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.activity-modal-panel::before {
+    background: linear-gradient(90deg, transparent, rgba(255,159,28,.7), transparent);
+}
+
+#activityModalClose:hover {
+    border-color: rgba(255,159,28,.25);
+    background: rgba(255,159,28,.08);
+}
+
+.activity-item:hover {
+    border-color: rgba(255,159,28,.17);
+}
+
+footer span {
+    color: rgba(255,159,28,.5);
+}
+
+#accountRole {
+    color: #ffb547 !important;
+}
