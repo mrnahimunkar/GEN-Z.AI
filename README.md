@@ -188,6 +188,11 @@ provider sudah diuji di Cloudflare.
    `VIDDRA_SESSION_SECRET`, `SIGHTENGINE_API_USER`,
    `SIGHTENGINE_API_SECRET`, `GITHUB_PAT`, `GITHUB_OWNER`, `GITHUB_REPO`,
    `GITHUB_WORKFLOW_FILE`, and `GITHUB_REF`.
+   For photo/video upscale, set `GITHUB_PAT` as a Worker secret with
+   permission to dispatch repository Actions workflows (`Actions: write` for a
+   fine-grained token). The upscale handler reads Worker bindings at request
+   time; `GITHUB_OWNER` and `GITHUB_REPO` default to `sugionoofficial` and
+   `GEN-Z.AI`, so they only need to be overridden for another repository.
 5. Uji login, generate/status, admin, Viddra, OpenKey streaming, serta integrasi
    provider pada URL preview sebelum mengalihkan domain production.
 

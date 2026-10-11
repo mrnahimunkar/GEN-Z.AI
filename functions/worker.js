@@ -35,7 +35,7 @@ export default {
 
         if (handler) {
             try {
-                return await runVercelHandler(handler, request, context);
+                return await runVercelHandler(handler, request, context, env);
             } catch (error) {
                 console.error("[Cloudflare Worker] API request failed:", error);
                 return Response.json(

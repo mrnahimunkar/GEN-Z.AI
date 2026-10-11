@@ -173,7 +173,7 @@ function createResponseAdapter(request) {
     };
 }
 
-export async function runVercelHandler(handler, request, context) {
+export async function runVercelHandler(handler, request, context, env) {
     let body;
 
     try {
@@ -192,6 +192,7 @@ export async function runVercelHandler(handler, request, context) {
         url: `${url.pathname}${url.search}`,
         headers,
         query: getQuery(url),
+        env,
         body,
         on(event, listener) {
             if (event === "close" && typeof listener === "function") {

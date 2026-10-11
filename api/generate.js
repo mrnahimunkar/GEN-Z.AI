@@ -2988,20 +2988,21 @@ function validateAdapterInput(
    UPSCALE VIDEO — CONSTANTS
    ========================================================= */
 
-const GITHUB_PAT =
-    String(process.env.GITHUB_PAT || "").trim();
+function getUpscaleGithubConfig(req) {
+    const binding = req?.env || {};
+    const getValue = (key, fallback = "") => {
+        const configured = binding[key] || process.env[key] || fallback;
+        return String(configured).trim();
+    };
 
-const GITHUB_OWNER =
-    String(process.env.GITHUB_OWNER || "").trim();
-
-const GITHUB_REPO =
-    String(process.env.GITHUB_REPO || "").trim();
-
-const GITHUB_WORKFLOW_FILE =
-    String(process.env.GITHUB_WORKFLOW_FILE || "upscale.yml").trim();
-
-const GITHUB_REF =
-    String(process.env.GITHUB_REF || "main").trim();
+    return {
+        token: getValue("GITHUB_PAT"),
+        owner: getValue("GITHUB_OWNER", "sugionoofficial"),
+        repo: getValue("GITHUB_REPO", "GEN-Z.AI"),
+        workflowFile: getValue("GITHUB_WORKFLOW_FILE", "upscale.yml"),
+        ref: getValue("GITHUB_REF", "main")
+    };
+}
 
 const UPSCALE_CREDIT_COST = 1;
 const UPSCALE_TARGET_LABEL = "1440p";
@@ -3158,27 +3159,24 @@ async function markUpscaleFailedAndRefund({
    ========================================================= */
 
 async function triggerUpscaleWorkflow({
+    github,
     historyId,
     sourceUrl,
     userId
 }) {
-    if (!GITHUB_PAT || !GITHUB_OWNER || !GITHUB_REPO) {
-        throw new Error("GitHub Actions configuration is incomplete");
-    }
-
-    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${GITHUB_WORKFLOW_FILE}/dispatches`;
+    const url = `https://api.github.com/repos/${github.owner}/${github.repo}/actions/workflows/${github.workflowFile}/dispatches`;
 
     const response = await fetch(url, {
         method: "POST",
         headers: {
-            Authorization: `Bearer ${GITHUB_PAT}`,
+            Authorization: `Bearer ${github.token}`,
             Accept: "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
             "Content-Type": "application/json",
             "User-Agent": "GENZ-AI-Upscale"
         },
         body: JSON.stringify({
-            ref: GITHUB_REF,
+            ref: github.ref,
             inputs: {
                 history_id: String(historyId),
                 source_url: String(sourceUrl),
@@ -3206,9 +3204,14 @@ async function triggerUpscaleWorkflow({
 async function handleUpscaleAction(req, res, body, user) {
 
     const historyId = String(body?.history_id || "").trim();
+    const github = getUpscaleGithubConfig(req);
 
     if (!historyId) {
         return failure(res, 400, "history_id is required");
+    }
+
+    if (!github.token) {
+        return failure(res, 500, "GitHub Actions secret GITHUB_PAT is not configured");
     }
 
     let parent;
@@ -3295,6 +3298,7 @@ async function handleUpscaleAction(req, res, body, user) {
 
     try {
         await triggerUpscaleWorkflow({
+            github,
             historyId: upscaleRow.id,
             sourceUrl,
             userId: user.id
@@ -3330,6 +3334,7 @@ async function handleUpscalePhotoAction(req, res, body, user) {
 
     const sourceUrl = String(body?.source_url || "").trim();
     const targetResolution = String(body?.target_resolution || "2k").trim().toLowerCase();
+    const github = getUpscaleGithubConfig(req);
 
     if (!sourceUrl) {
         return failure(res, 400, "source_url is required");
@@ -3339,8 +3344,8 @@ async function handleUpscalePhotoAction(req, res, body, user) {
         return failure(res, 400, "target_resolution must be '2k' or '4k'");
     }
 
-    if (!GITHUB_PAT || !GITHUB_OWNER || !GITHUB_REPO) {
-        return failure(res, 500, "GitHub Actions configuration is incomplete");
+    if (!github.token) {
+        return failure(res, 500, "GitHub Actions secret GITHUB_PAT is not configured");
     }
 
     /* ===== DEDUCT CREDIT ===== */
@@ -3426,20 +3431,20 @@ async function handleUpscalePhotoAction(req, res, body, user) {
 
     /* ===== TRIGGER GITHUB WORKFLOW ===== */
 
-    const ghUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${UPSCALE_PHOTO_WORKFLOW_FILE}/dispatches`;
+    const ghUrl = `https://api.github.com/repos/${github.owner}/${github.repo}/actions/workflows/${UPSCALE_PHOTO_WORKFLOW_FILE}/dispatches`;
 
     try {
         const response = await fetch(ghUrl, {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${GITHUB_PAT}`,
+                Authorization: `Bearer ${github.token}`,
                 Accept: "application/vnd.github+json",
                 "X-GitHub-Api-Version": "2022-11-28",
                 "Content-Type": "application/json",
                 "User-Agent": "GENZ-AI-Upscale-Photo"
             },
             body: JSON.stringify({
-                ref: GITHUB_REF,
+                ref: github.ref,
                 inputs: {
                     history_id: String(historyRow.id),
                     source_url: sourceUrl,
