@@ -2327,3 +2327,113 @@
     }
 
 }
+
+/* =========================================================
+       EDIT USER — RESPONSIVE BLACK AND ORANGE FINISH
+    ========================================================= */
+
+    :root {
+        --user-edit-orange: #ff9f1c;
+        --user-edit-orange-bright: #ffb547;
+    }
+
+    .user-management-page {
+        width: 100%;
+        max-width: 1900px;
+        padding: 28px clamp(10px, 1.4vw, 22px) 52px;
+    }
+
+    .stat-card,
+    .users-card,
+    .modal-content,
+    .delete-warning {
+        border: 1px solid var(--user-edit-orange);
+        background: #050505;
+        box-shadow: none;
+    }
+
+    .users-card-header,
+    .users-search {
+        border-color: rgba(255,159,28,.58);
+        background: #080808;
+    }
+
+    .modal-header {
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255,159,28,.58);
+    }
+
+    .modal-close,
+    .form-group input,
+    .form-group select,
+    .search-input,
+    .action-button {
+        border-color: rgba(255,159,28,.72);
+        background: #080808;
+    }
+
+    .modal-close:hover,
+    .action-button:hover {
+        border-color: var(--user-edit-orange-bright);
+        background: #111;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .search-input:focus {
+        border-color: var(--user-edit-orange-bright);
+        box-shadow: 0 0 0 2px rgba(255,159,28,.16);
+    }
+
+    .back-button {
+        border-color: rgba(255,159,28,.72);
+    }
+
+    .back-button:hover {
+        border-color: var(--user-edit-orange-bright);
+        background: rgba(255,159,28,.08);
+    }
+
+    .users-table th,
+    .users-table td {
+        border-bottom-color: rgba(255,159,28,.28);
+    }
+
+    .users-table tbody tr:hover {
+        background: rgba(255,255,255,.025);
+    }
+
+    @media (max-width: 900px) {
+        .user-management-page {
+            padding: 24px 12px 44px;
+        }
+    }
+
+    @media (max-width: 560px) {
+        .user-management-page {
+            padding: 18px 8px 32px;
+        }
+
+        .modal {
+            padding: 8px;
+        }
+
+        .modal-content {
+            max-height: calc(100vh - 16px);
+            padding: 16px;
+        }
+    }
+
+    #editUserForm {
+        width: 100%;
+        max-width: 680px;
+        margin: 0 auto;
+    }
+
+    #editUserForm > .form-group {
+        margin: 0 auto 10px;
+        padding: 12px;
+        border: 1px solid #000;
+        border-radius: 10px;
+        background: #101010;
+    }

@@ -11,6 +11,7 @@ const staticDirectories = [
     "generate",
     "history",
     "metadata-cleaner",
+    "models",
     "navigation",
     "prompt-studio",
     "topup",

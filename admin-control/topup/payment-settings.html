@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Pembayaran - GEN-Z.AI</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+    <script src="../../assets/js/config.js"></script>
+    <script src="../../navigation/navigation.js?v=presence-20261010"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: #f5f7fb;
+            background: #080b12;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+        button, input { font: inherit; }
+        .page { width: 100%; min-height: 100vh; padding: 28px; }
+        .container { width: 100%; max-width: 1100px; margin: 0 auto; }
+        .header, .method-card {
+            border: 1px solid rgba(255, 106, 0, .38);
+            border-radius: 16px;
+            background: linear-gradient(145deg, #141416, #070707);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+        h1 { margin: 0; font-size: 27px; }
+        .subtitle, .hint { color: #a5a5ad; line-height: 1.55; }
+        .subtitle { margin: 7px 0 0; font-size: 13px; }
+        .methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        .method-card { padding: 20px; }
+        .method-card h2 { margin: 0 0 16px; color: #ff8a2a; font-size: 18px; }
+        .field { display: grid; gap: 7px; margin-bottom: 14px; }
+        .field label { color: #cbd5e1; font-size: 13px; font-weight: 700; }
+        .field input {
+            width: 100%;
+            border: 1px solid #34343a;
+            border-radius: 9px;
+            padding: 11px 12px;
+            color: #f5f7fb;
+            background: #09090a;
+        }
+        .field input:focus { outline: 2px solid rgba(255, 106, 0, .5); border-color: #ff6a00; }
+        .active-control { display: flex; align-items: center; gap: 9px; color: #cbd5e1; font-size: 13px; }
+        .active-control input { accent-color: #ff6a00; }
+        .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+        .button {
+            border: 1px solid rgba(255, 106, 0, .65);
+            border-radius: 9px;
+            padding: 10px 15px;
+            color: white;
+            background: #17110c;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .button.primary { color: #111; background: #ff7a18; }
+        .button:disabled { cursor: wait; opacity: .55; }
+        .message { min-height: 22px; margin-top: 14px; font-size: 13px; }
+        .message.error { color: #fca5a5; }
+        .message.success { color: #86efac; }
+        .hint { margin: 16px 0 0; font-size: 12px; }
+        .hidden { display: none; }
+        @media (max-width: 700px) {
+            .page { padding: 76px 14px 28px; }
+            .methods { grid-template-columns: 1fr; }
+            .header { align-items: flex-start; flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div id="genz-navigation"></div>
+    <main class="page">
+        <div class="container">
+            <header class="header">
+                <div>
+                    <h1>Pengaturan Pembayaran</h1>
+                    <p class="subtitle">Atur rekening dan QRIS yang ditampilkan pada halaman Top Up pengguna.</p>
+                </div>
+                <button class="button" id="backButton" type="button">← Admin Panel</button>
+            </header>
+            <div id="methodCards" class="methods">
+                <div class="method-card">Memuat pengaturan pembayaran...</div>
+            </div>
+            <p class="hint">Metode hanya terlihat oleh pengguna setelah datanya lengkap dan status Aktif dinyalakan. URL gambar QRIS harus HTTPS dan dapat dibuka oleh pengguna.</p>
+            <div id="message" class="message" role="status"></div>
+        </div>
+    </main>
+    <script>
+    (function () {
+        "use strict";
+
+        const methods = [
+            { id: "bca", label: "BCA", kind: "bank" },
+            { id: "dana", label: "DANA", kind: "bank" },
+            { id: "seabank", label: "SeaBank", kind: "bank" },
+            { id: "qris", label: "QRIS", kind: "qris" }
+        ];
+        const cards = document.getElementById("methodCards");
+        const message = document.getElementById("message");
+        let supabaseClient;
+        let saving = false;
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = "message " + (type || "");
+        }
+
+        function getClient() {
+            if (window.GENZ_SUPABASE) return window.GENZ_SUPABASE;
+            if (window.supabaseClient) return window.supabaseClient;
+            const config = window.GENZ_CONFIG || {};
+            const url = config.SUPABASE_URL || config.supabaseUrl;
+            const key = config.SUPABASE_KEY || config.supabaseKey;
+            if (url && key && window.supabase?.createClient) {
+                return window.supabase.createClient(url, key, {
+                    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+                });
+            }
+            throw new Error("Konfigurasi Supabase tidak ditemukan.");
+        }
+
+        function renderCards(rows) {
+            const byMethod = new Map(rows.map(function (row) {
+                return [row.method, row];
+            }));
+            cards.innerHTML = methods.map(function (method) {
+                const row = byMethod.get(method.id) || {};
+                const details = method.kind === "bank"
+                    ? `
+                        <div class="field">
+                            <label for="${method.id}-number">Nomor rekening / tujuan</label>
+                            <input id="${method.id}-number" name="account_number" value="${escapeHtml(row.account_number)}" autocomplete="off">
+                        </div>
+                        <div class="field">
+                            <label for="${method.id}-name">Nama pemilik rekening / akun</label>
+                            <input id="${method.id}-name" name="account_name" value="${escapeHtml(row.account_name)}" autocomplete="name">
+                        </div>
+                    `
+                    : `
+                        <div class="field">
+                            <label for="${method.id}-qr">URL gambar QRIS (HTTPS)</label>
+                            <input id="${method.id}-qr" name="qr_image_url" type="url" value="${escapeHtml(row.qr_image_url)}" placeholder="https://...">
+                        </div>
+                        <div class="field">
+                            <label for="${method.id}-name">Nama penerima (opsional)</label>
+                            <input id="${method.id}-name" name="account_name" value="${escapeHtml(row.account_name)}" autocomplete="name">
+                        </div>
+                    `;
+                return `
+                    <section class="method-card" data-method="${method.id}" data-kind="${method.kind}">
+                        <h2>${method.label}</h2>
+                        ${details}
+                        <label class="active-control">
+                            <input name="is_active" type="checkbox" ${row.is_active ? "checked" : ""}>
+                            Aktifkan untuk pengguna
+                        </label>
+                        <div class="actions">
+                            <button class="button primary" type="button" data-save="${method.id}">Simpan ${method.label}</button>
+                        </div>
+                    </section>
+                `;
+            }).join("");
+        }
+
+        async function loadSettings() {
+            const { data, error } = await supabaseClient
+                .from("topup_payment_methods")
+                .select("method,display_name,account_number,account_name,qr_image_url,is_active");
+            if (error) throw error;
+            renderCards(data || []);
+        }
+
+        async function saveMethod(methodId) {
+            if (saving) return;
+            const card = cards.querySelector(`[data-method="${methodId}"]`);
+            const kind = card.dataset.kind;
+            const accountNumber = card.querySelector('[name="account_number"]')?.value.trim() || "";
+            const accountName = card.querySelector('[name="account_name"]').value.trim();
+            const qrImageUrl = card.querySelector('[name="qr_image_url"]')?.value.trim() || "";
+            const isActive = card.querySelector('[name="is_active"]').checked;
+
+            if (isActive && kind === "bank" && (!accountNumber || !accountName)) {
+                showMessage("Lengkapi nomor dan nama rekening sebelum mengaktifkan metode.", "error");
+                return;
+            }
+            if (isActive && kind === "qris") {
+                try {
+                    if (new URL(qrImageUrl).protocol !== "https:") throw new Error("URL harus HTTPS");
+                } catch (error) {
+                    showMessage("Masukkan URL gambar QRIS HTTPS yang valid sebelum mengaktifkan QRIS.", "error");
+                    return;
+                }
+            }
+
+            const button = card.querySelector("[data-save]");
+            saving = true;
+            button.disabled = true;
+            showMessage("Menyimpan pengaturan...", "");
+            try {
+                const { error } = await supabaseClient
+                    .from("topup_payment_methods")
+                    .upsert({
+                        method: methodId,
+                        display_name: methods.find(item => item.id === methodId).label,
+                        account_number: accountNumber,
+                        account_name: accountName,
+                        qr_image_url: qrImageUrl,
+                        is_active: isActive,
+                        updated_at: new Date().toISOString()
+                    }, { onConflict: "method" });
+                if (error) throw error;
+                showMessage("Pengaturan " + methodId.toUpperCase() + " berhasil disimpan.", "success");
+                await loadSettings();
+            } catch (error) {
+                console.error("[GEN-Z.AI] Payment method save failed:", error);
+                showMessage(error.message || "Pengaturan pembayaran gagal disimpan.", "error");
+            } finally {
+                saving = false;
+                button.disabled = false;
+            }
+        }
+
+        cards.addEventListener("click", function (event) {
+            const button = event.target.closest("[data-save]");
+            if (button) saveMethod(button.dataset.save);
+        });
+
+        document.getElementById("backButton").addEventListener("click", function () {
+            window.location.href = "../admin-panel.html";
+        });
+
+        async function init() {
+            try {
+                const navigationReady = window.GENZNavigationReady
+                    ? await window.GENZNavigationReady
+                    : false;
+                if (!navigationReady) throw new Error("Sesi tidak aktif. Silakan login kembali.");
+                const role = String(window.GENZ_NAVIGATION_ROLE || "").toLowerCase();
+                if (role !== "admin" && role !== "owner") {
+                    throw new Error("Akses admin diperlukan untuk mengatur metode pembayaran.");
+                }
+                supabaseClient = getClient();
+                const { data, error } = await supabaseClient.auth.getUser();
+                if (error) throw error;
+                if (!data.user) throw new Error("Sesi admin tidak ditemukan.");
+                await loadSettings();
+            } catch (error) {
+                console.error("[GEN-Z.AI] Payment settings initialization failed:", error);
+                cards.innerHTML = "";
+                showMessage(
+                    String(error.message || "").includes("topup_payment_methods")
+                        ? "Tabel pengaturan belum dibuat. Jalankan supabase/topup-payment-methods.sql di Supabase SQL Editor."
+                        : error.message || "Pengaturan pembayaran gagal dimuat.",
+                    "error"
+                );
+            }
+        }
+
+        init();
+    })();
+    </script>
+</body>
+</html>

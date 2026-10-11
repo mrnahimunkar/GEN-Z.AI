@@ -516,6 +516,7 @@
                                 isDefault
                                     ? `
                                         <span
+                                            class="provider-default-badge"
                                             style="
                                                 display:inline-flex;
                                                 align-items:center;
@@ -607,6 +608,7 @@
                 <!-- META -->
 
                 <div
+                    class="provider-card-meta"
                     style="
                         display:flex;
                         flex-wrap:wrap;

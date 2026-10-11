@@ -235,7 +235,7 @@
 
             padding:
                 62px
-                24px
+                clamp(12px, 1.5vw, 24px)
                 55px;
 
             position: relative;
@@ -268,7 +268,7 @@
 
             width: 100%;
 
-            max-width: 1180px;
+            max-width: 1600px;
 
             margin: 0 auto;
 
@@ -1310,7 +1310,7 @@
 
                 padding:
                     60px
-                    14px
+                    10px
                     35px;
             }
 
@@ -1410,6 +1410,197 @@
 
                 flex-direction:
                     column;
+            }
+        }
+
+        :root {
+            --admin-orange: #ff9f1c;
+            --admin-orange-bright: #ffb547;
+            --admin-orange-line: rgba(255,159,28,.9);
+        }
+
+        .page-header,
+        .hero,
+        .feature-card,
+        .feature-icon,
+        .feature-arrow,
+        .system-status,
+        .status-role,
+        .eyebrow,
+        .header-badge {
+            border-color: var(--admin-orange-line);
+        }
+
+        .page-header,
+        .hero,
+        .feature-card {
+            background: linear-gradient(145deg, rgba(18,18,20,.96), rgba(6,6,7,.9));
+            box-shadow: 0 12px 38px rgba(0,0,0,.22);
+        }
+
+        .page-header::before,
+        .hero::before,
+        .feature-card::before {
+            background: none;
+        }
+
+        .page-header::after,
+        .feature-card::after {
+            background: linear-gradient(90deg, transparent, var(--admin-orange), transparent);
+            opacity: .65;
+        }
+
+        .feature-card:hover {
+            border-color: var(--admin-orange-bright);
+            background: linear-gradient(145deg, rgba(25,20,14,.98), rgba(7,7,8,.94));
+            box-shadow: 0 14px 40px rgba(0,0,0,.3);
+        }
+
+        .feature-icon,
+        .feature-arrow,
+        .eyebrow,
+        .status-role {
+            background: rgba(255,255,255,.025);
+            box-shadow: none;
+        }
+
+        .feature-icon {
+            color: var(--admin-orange-bright);
+        }
+
+        .feature-card:hover .feature-icon {
+            box-shadow: none;
+        }
+
+        .feature-arrow {
+            color: var(--admin-orange-bright);
+        }
+
+        .feature-card:hover .feature-arrow {
+            background: rgba(255,255,255,.06);
+        }
+
+        .eyebrow,
+        .status-role {
+            color: var(--admin-orange-bright);
+        }
+
+        .system-status {
+            background: rgba(5,5,7,.82);
+            box-shadow: 0 10px 30px rgba(0,0,0,.18);
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                padding-right: 10px;
+                padding-left: 10px;
+            }
+
+            .container {
+                max-width: none;
+            }
+        }
+
+        body {
+            background: #050505;
+        }
+
+        .page::before {
+            display: none;
+        }
+
+        .page {
+            width: 100%;
+            padding-right: clamp(6px, 1vw, 12px);
+            padding-left: clamp(6px, 1vw, 12px);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1600px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .page-header,
+        .hero,
+        .feature-card,
+        .system-status,
+        .loading-logo,
+        .holo-logo,
+        .header-badge,
+        .eyebrow,
+        .feature-icon,
+        .feature-arrow,
+        .status-role {
+            border: 1px solid var(--admin-orange) !important;
+            background: #050505 !important;
+            box-shadow: none !important;
+        }
+
+        .page-header,
+        .hero,
+        .feature-card,
+        .system-status,
+        .loading-logo,
+        .holo-logo {
+            background: #050505 !important;
+        }
+
+        .loading-spinner {
+            border-color: rgba(255,159,28,.25);
+            border-top-color: var(--admin-orange-bright);
+        }
+
+        .page-header::before,
+        .hero::before,
+        .feature-card::before,
+        .page-header::after,
+        .feature-card::after,
+        .holo-logo::before {
+            display: none;
+        }
+
+        .holo-logo::after {
+            border-radius: inherit;
+            background: #050505;
+        }
+
+        .header-badge,
+        .eyebrow,
+        .status-role,
+        .feature-icon,
+        .feature-arrow {
+            color: var(--admin-orange-bright);
+        }
+
+        .feature-grid {
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .feature-card:hover {
+            border-color: var(--admin-orange-bright) !important;
+            background: #050505 !important;
+            box-shadow: 0 0 12px rgba(255,159,28,.14) !important;
+        }
+
+        .feature-card:hover .feature-icon,
+        .feature-card:hover .feature-arrow {
+            border-color: var(--admin-orange-bright) !important;
+            background: #050505 !important;
+            color: var(--admin-orange-bright);
+            box-shadow: none;
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                padding-right: 6px;
+                padding-left: 6px;
+            }
+
+            .feature-grid {
+                gap: 10px;
             }
         }
 
@@ -1771,6 +1962,69 @@
                     <p>
                         Kelola pengajuan top up, jumlah credit,
                         nominal pembayaran, dan status transaksi.
+                    </p>
+
+                    <span
+                        class="feature-arrow"
+                        aria-hidden="true"
+                    >
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    class="feature-card"
+                    href="./topup/payment-settings.html"
+                >
+
+                    <div class="feature-icon">
+                        🏦
+                    </div>
+
+                    <h2>
+                        Pengaturan Pembayaran
+                    </h2>
+
+                    <p>
+                        Atur rekening bank dan QRIS yang
+                        ditampilkan pada halaman Top Up pengguna.
+                    </p>
+
+                    <span
+                        class="feature-arrow"
+                        aria-hidden="true"
+                    >
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- =================================================
+                     PAYMENT REVIEW
+
+                     Modul khusus untuk meninjau bukti pembayaran
+                     dan memproses pengajuan top up.
+                ================================================== -->
+
+                <a
+                    class="feature-card"
+                    href="./topup/payment-review.html"
+                >
+
+                    <div class="feature-icon">
+                        ▣
+                    </div>
+
+                    <h2>
+                        Payment Review
+                    </h2>
+
+                    <p>
+                        Periksa bukti pembayaran dan proses
+                        pengajuan top up pengguna.
                     </p>
 
                     <span

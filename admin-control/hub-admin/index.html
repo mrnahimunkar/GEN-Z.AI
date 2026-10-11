@@ -410,6 +410,115 @@
                 width: 100%;
             }
         }
+
+        :root {
+            --hub-orange: #ff9f1c;
+            --hub-orange-bright: #ffb547;
+        }
+
+        html,
+        body {
+            background: #050505;
+            color: #fff;
+        }
+
+        .page {
+            width: 100%;
+            padding: 24px 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1600px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .page-header,
+        .card,
+        .admin-box,
+        .form-group input,
+        .form-group textarea,
+        .switch-row,
+        .preview-item,
+        .status,
+        .loading-box {
+            border: 1px solid var(--hub-orange) !important;
+            background: #050505 !important;
+            box-shadow: none !important;
+        }
+
+        .card,
+        .admin-box,
+        .preview-item,
+        .switch-row {
+            border-color: var(--hub-orange) !important;
+            background: #050505 !important;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            color: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--hub-orange-bright) !important;
+            box-shadow: 0 0 0 2px rgba(255,159,28,.16) !important;
+        }
+
+        .switch input:checked + .slider {
+            background: var(--hub-orange) !important;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            border: 1px solid var(--hub-orange) !important;
+            background: #050505 !important;
+            color: var(--hub-orange-bright) !important;
+            box-shadow: none !important;
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            border-color: var(--hub-orange-bright) !important;
+            background: #111 !important;
+        }
+
+        .status.success,
+        .status.error,
+        .status.info {
+            border-color: var(--hub-orange) !important;
+            background: #050505 !important;
+        }
+
+        .loading-overlay {
+            background: #050505;
+        }
+
+        .loading-box {
+            padding: 22px;
+            border-radius: 12px;
+            color: rgba(255,255,255,.7);
+        }
+
+        .spinner {
+            border-color: rgba(255,159,28,.25);
+            border-top-color: var(--hub-orange-bright);
+        }
+
+        @media (max-width: 900px) {
+            .page {
+                padding-right: 8px;
+                padding-left: 8px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                padding: 16px 6px;
+            }
+        }
     </style>
 </head>
 

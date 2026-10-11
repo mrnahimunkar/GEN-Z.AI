@@ -11,6 +11,7 @@
 
     <!-- GEN-Z.AI Config -->
     <script src="../../assets/js/config.js"></script>
+    <script src="../../navigation/navigation.js?v=presence-20261010"></script>
 
     <style>
         * {
@@ -591,6 +592,8 @@
 
 <body>
 
+<div id="genz-navigation"></div>
+
 <div class="page">
     <div class="container">
 
@@ -1045,7 +1048,8 @@
             bca: "BCA",
             dana: "DANA",
             seabank: "SeaBank",
-            qris: "QRIS"
+            qris: "QRIS",
+            manual: "Manual"
         };
 
         return labels[value] || value || "-";
@@ -1152,64 +1156,6 @@
 
 
     /* =========================================================
-       ADMIN CHECK
-    ========================================================= */
-
-    async function verifyAdminAccess() {
-
-        if (
-            typeof supabaseClient.rpc !== "function"
-        ) {
-            return true;
-        }
-
-        try {
-
-            const {
-                data,
-                error
-            } = await supabaseClient.rpc(
-                "is_admin_or_owner"
-            );
-
-            if (!error) {
-
-                if (data === true) {
-                    return true;
-                }
-
-                if (
-                    data &&
-                    (
-                        data.success === true ||
-                        data.is_admin === true
-                    )
-                ) {
-                    return true;
-                }
-
-                if (data === false) {
-                    throw new Error(
-                        "Akses admin diperlukan."
-                    );
-                }
-            }
-
-        } catch (error) {
-
-            /*
-             * Jangan memblokir halaman hanya karena
-             * function helper admin berbeda di project.
-             *
-             * RLS Supabase tetap menjadi lapisan keamanan.
-             */
-        }
-
-        return true;
-    }
-
-
-    /* =========================================================
        LOAD TOPUP REQUESTS
     ========================================================= */
 
@@ -1289,16 +1235,21 @@
         } = await supabaseClient
             .from("profiles")
             .select(
-                "id,email,full_name,name,username"
+                "id,email,name"
             )
             .in("id", userIds);
 
         if (error) {
+            console.error(
+                "Payment review profile load error:",
+                error
+            );
 
-            /*
-             * Jangan gagalkan seluruh halaman jika
-             * schema profiles berbeda.
-             */
+            showToast(
+                "Nama/email user tidak dapat dimuat. ID user akan ditampilkan.",
+                "error"
+            );
+
             return [];
         }
 
@@ -2027,6 +1978,7 @@
             }
 
             if (
+                data === false ||
                 data &&
                 typeof data === "object" &&
                 data.success === false
@@ -2132,6 +2084,7 @@
         try {
 
             const {
+                data,
                 error
             } = await supabaseClient
                 .from("topup_requests")
@@ -2145,10 +2098,17 @@
                 .eq(
                     "status",
                     "pending"
-                );
+                )
+                .select("id");
 
             if (error) {
                 throw error;
+            }
+
+            if (!data || data.length === 0) {
+                throw new Error(
+                    "Pengajuan tidak berubah. Pengajuan mungkin sudah diproses atau akses database ditolak."
+                );
             }
 
             showToast(
@@ -2417,6 +2377,28 @@
 
         try {
 
+            const navigationReady =
+                window.GENZNavigationReady
+                    ? await window.GENZNavigationReady
+                    : false;
+
+            if (!navigationReady) {
+                throw new Error(
+                    "Navigasi atau sesi akun tidak berhasil dimuat. Silakan login kembali."
+                );
+            }
+
+            const role =
+                String(window.GENZ_NAVIGATION_ROLE || "")
+                    .trim()
+                    .toLowerCase();
+
+            if (role !== "admin" && role !== "owner") {
+                throw new Error(
+                    "Akses admin diperlukan untuk membuka Payment Review."
+                );
+            }
+
             supabaseClient =
                 getSupabaseClient();
 
@@ -2434,8 +2416,6 @@
                 supabaseClient;
 
             await loadCurrentUser();
-
-            await verifyAdminAccess();
 
             await loadData();
 

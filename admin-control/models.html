@@ -3112,6 +3112,163 @@
 
 </style>
 
+<style>
+    :root {
+        --models-orange: #ff9f1c;
+        --models-orange-bright: #ffb547;
+        --models-green-bright: #39ff14;
+    }
+
+    .main-content {
+        width: 100%;
+        max-width: 1600px;
+        padding-right: 10px;
+        padding-left: 10px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .stats-grid {
+        gap: 10px;
+    }
+
+    .models-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .page-header,
+    .eyebrow,
+    .stat-card,
+    .search-box input,
+    .filter-select,
+    .model-card,
+    .model-icon,
+    .premium-badge,
+    .meta-item,
+    .model-pricing,
+    .pricing-box,
+    .chip,
+    .status-badge,
+    .state-panel,
+    .state-icon,
+    .toast,
+    .loading-box,
+    .model-modal,
+    .model-modal-close,
+    .model-form-field,
+    .model-form-field input,
+    .model-form-field select,
+    .model-form-field textarea,
+    .model-search-results,
+    .model-search-item {
+        border: 1px solid var(--models-orange) !important;
+        background: #050505 !important;
+        box-shadow: none !important;
+    }
+
+    .page-header,
+    .stat-card,
+    .model-card,
+    .state-panel,
+    .model-modal {
+        border-color: var(--models-orange) !important;
+        background: #050505 !important;
+    }
+
+    .stat-card::before,
+    .model-card::before,
+    .model-card::after {
+        display: none;
+    }
+
+    .model-card:hover {
+        border-color: var(--models-orange-bright) !important;
+        background: #050505 !important;
+        box-shadow: 0 0 12px rgba(255,159,28,.13) !important;
+    }
+
+    .model-search-item:hover,
+    .model-search-item[aria-selected="true"] {
+        border-color: var(--models-orange-bright) !important;
+        background: #101010 !important;
+    }
+
+    .search-box input,
+    .filter-select,
+    .model-form-field input,
+    .model-form-field select,
+    .model-form-field textarea {
+        color: #fff !important;
+    }
+
+    .search-box input:focus,
+    .filter-select:focus,
+    .model-form-field input:focus,
+    .model-form-field select:focus,
+    .model-form-field textarea:focus {
+        border-color: var(--models-orange-bright) !important;
+        background: #050505 !important;
+        box-shadow: 0 0 0 2px rgba(255,159,28,.16) !important;
+    }
+
+    .model-modal-header,
+    .model-modal-footer {
+        border-color: var(--models-orange) !important;
+        background: #050505 !important;
+    }
+
+    .model-modal-close,
+    .model-actions .btn-primary,
+    .model-actions .btn-secondary,
+    #refreshModelsBtn {
+        border: 1px solid var(--models-orange) !important;
+        background: #050505 !important;
+        color: var(--models-orange-bright) !important;
+        box-shadow: none !important;
+    }
+
+    #addModelBtn {
+        border: 1px solid var(--models-green-bright) !important;
+        background: var(--models-green-bright) !important;
+        color: #050505 !important;
+        box-shadow: 0 0 14px rgba(57,255,20,.24) !important;
+    }
+
+    #addModelBtn:hover {
+        border-color: var(--models-green-bright) !important;
+        background: #58ff38 !important;
+        color: #050505 !important;
+        box-shadow: 0 0 20px rgba(57,255,20,.36) !important;
+    }
+
+    .model-modal-footer .btn-primary {
+        border: 1px solid var(--models-orange) !important;
+        background: #050505 !important;
+        color: var(--models-orange-bright) !important;
+        box-shadow: none !important;
+    }
+
+    @media (max-width: 1000px) {
+        .main-content {
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+    }
+
+    @media (max-width: 760px) {
+        .main-content {
+            padding-right: 6px;
+            padding-left: 6px;
+        }
+
+        .models-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>
+
 
 <div
     id="modelModal"
@@ -3576,7 +3733,7 @@
 
 <script
     type="module"
-    src="./models/models-loader.js"
+    src="./models/models-loader.js?v=models-registry-20261011"
 ></script>
 
 

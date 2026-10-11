@@ -1,4 +1,3 @@
-//credit?v=0.1
 <!DOCTYPE html>
 <html lang="id">
 
@@ -1745,6 +1744,165 @@
 
             }
 
+        }
+
+        :root {
+            --credit-orange: #ff9f1c;
+            --credit-orange-bright: #ffb547;
+            --credit-green-bright: #39ff14;
+            --credit-red-bright: #ff3030;
+        }
+
+        body {
+            padding-left: 0 !important;
+            background: #080808;
+        }
+
+        .app {
+            margin-left: var(--genz-sidebar-width, 248px);
+        }
+
+        .main {
+            width: auto;
+            padding: 28px 10px 40px;
+        }
+
+        .content {
+            width: min(1600px, 100%);
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .hero,
+        .stat-card,
+        .card,
+        .stat-icon,
+        .search-input,
+        .refresh-button,
+        .search-meta,
+        .message,
+        .table-wrap,
+        th,
+        td,
+        .avatar,
+        .role,
+        .status,
+        .loading,
+        .empty,
+        .empty-search-icon {
+            border: 1px solid var(--credit-orange) !important;
+            background: #050505 !important;
+            box-shadow: none !important;
+        }
+
+        .hero,
+        .stat-card,
+        .card {
+            border-color: var(--credit-orange) !important;
+            background: #050505 !important;
+        }
+
+        .hero::before,
+        .stat-card::after {
+            display: none;
+        }
+
+        .stats {
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .hero {
+            margin-bottom: 12px;
+        }
+
+        .card-header {
+            border-bottom: 1px solid var(--credit-orange) !important;
+        }
+
+        .search-input {
+            color: #fff;
+        }
+
+        .search-input:focus {
+            border-color: var(--credit-orange-bright) !important;
+            background: #050505 !important;
+            box-shadow: 0 0 0 2px rgba(255,159,28,.16) !important;
+        }
+
+        .refresh-button:hover,
+        .clear-search:hover {
+            border-color: var(--credit-orange-bright) !important;
+            color: var(--credit-orange-bright);
+            background: #111 !important;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            min-width: 900px;
+            background: #050505;
+        }
+
+        th,
+        td {
+            border-color: rgba(255,159,28,.32) !important;
+        }
+
+        tbody tr:hover,
+        th {
+            background: #101010 !important;
+        }
+
+        .add-button {
+            border: 1px solid var(--credit-orange) !important;
+            color: #050505 !important;
+            background: var(--credit-green-bright) !important;
+            box-shadow: 0 0 12px rgba(57,255,20,.2) !important;
+        }
+
+        .remove-button {
+            border: 1px solid var(--credit-orange) !important;
+            color: #fff !important;
+            background: var(--credit-red-bright) !important;
+            box-shadow: 0 0 12px rgba(255,48,48,.18) !important;
+        }
+
+        .add-button:hover,
+        .remove-button:hover {
+            filter: brightness(1.12);
+        }
+
+        .role,
+        .status,
+        .avatar,
+        .stat-icon,
+        .empty-search-icon {
+            color: var(--credit-orange-bright) !important;
+        }
+
+        @media (max-width: 800px) {
+            .main {
+                padding: 76px 8px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .main {
+                padding: 76px 6px 24px;
+            }
+
+            .hero {
+                padding: 18px;
+            }
         }
 
     </style>

@@ -61,22 +61,22 @@ const MODEL_DATA_VERSION =
 ========================================================= */
 
 import grokConfig
-    from "../../models/grok-imagine-image-to-video/config.js";
+    from "../../models/grok-imagine-image-to-video/config.js?v=models-registry-20261011";
 
 import grokParameters
-    from "../../models/grok-imagine-image-to-video/parameters.js";
+    from "../../models/grok-imagine-image-to-video/parameters.js?v=models-registry-20261011";
 
 import seedanceConfig
-    from "../../models/seedance-2-5/config.js";
+    from "../../models/seedance-2-5/config.js?v=models-registry-20261011";
 
 import seedanceParameters
-    from "../../models/seedance-2-5/parameters.js";
+    from "../../models/seedance-2-5/parameters.js?v=models-registry-20261011";
 
 import motiongenConfig
-    from "../../models/digital-human-lipsync-image/config.js";
+    from "../../models/digital-human-lipsync-image/config.js?v=models-registry-20261011";
 
 import motiongenParameters
-    from "../../models/digital-human-lipsync-image/parameters.js";
+    from "../../models/digital-human-lipsync-image/parameters.js?v=models-registry-20261011";
 
 
 /* =========================================================

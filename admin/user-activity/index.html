@@ -50,9 +50,9 @@
         }
 
         main {
-            width: min(1160px, 100%);
+            width: min(1600px, 100%);
             margin: auto;
-            padding: 96px 28px 64px;
+            padding: 96px clamp(12px, 2vw, 28px) 64px;
         }
 
         .page-header {
@@ -841,7 +841,7 @@
 
         @media (max-width: 600px) {
             main {
-                padding: 85px 15px 35px;
+                padding: 85px 12px 35px;
             }
             .page-header {
                 align-items: flex-start;
@@ -905,6 +905,220 @@
                 transition-duration: .01ms !important;
                 animation-duration: .01ms !important;
             }
+        }
+
+        :root {
+            --accent: #ff9800;
+            --accent-2: #ffb52e;
+            --accent-dark: #ffad1f;
+            --success: #35f28b;
+            --outline: rgba(255,152,0,.82);
+        }
+
+        body {
+            background:
+                linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px),
+                #050608;
+        }
+
+        .page-header::after {
+            background: linear-gradient(90deg, rgba(255,152,0,.42), rgba(255,152,0,.08) 72%, transparent);
+        }
+
+        .page-overline,
+        .user-overline,
+        .activity-overline,
+        .back-link-icon,
+        .activity-prompt-label {
+            color: #ffb52e;
+        }
+
+        .page-overline::before,
+        .user-overline::before,
+        .user-header::before,
+        .activity-model::before,
+        .activity-count::before,
+        .user-stat::before {
+            background: #ff9800;
+            box-shadow: none;
+        }
+
+        .back-link,
+        .user-header,
+        .user-stat,
+        .activity-count,
+        .activity-item,
+        .activity-info-box,
+        .activity-prompt-block,
+        .state-box {
+            border-color: var(--outline);
+        }
+
+        .back-link {
+            color: #ffd18a;
+            background: rgba(255,255,255,.025);
+        }
+
+        .back-link:hover {
+            border-color: #ffad1f;
+            background: rgba(255,255,255,.045);
+            box-shadow: none;
+        }
+
+        .user-header {
+            background: linear-gradient(135deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+            box-shadow: 0 24px 70px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035);
+        }
+
+        .user-header::after {
+            background: transparent;
+        }
+
+        .user-avatar {
+            border-color: rgba(255,173,31,.8);
+            background: linear-gradient(145deg, #24201a, #12110e);
+            color: #ffd18a;
+            box-shadow: 0 12px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08);
+        }
+
+        .user-badge,
+        .user-badge.credits,
+        .user-badge.status-active {
+            border-color: var(--outline);
+            background: rgba(255,255,255,.025);
+            color: #ffd18a;
+            box-shadow: none;
+        }
+
+        .user-stat {
+            background: rgba(255,255,255,.018);
+            box-shadow: none;
+        }
+
+        .user-stat:nth-child(2),
+        .user-stat:nth-child(3),
+        .user-stat:nth-child(4) {
+            --stat-accent: #ff9800;
+        }
+
+        .user-stat:hover {
+            border-color: #ffad1f;
+            background: rgba(255,255,255,.035);
+            box-shadow: none;
+        }
+
+        .activity-count {
+            background: rgba(255,255,255,.018);
+            color: #ffd18a;
+            box-shadow: none;
+        }
+
+        .activity-item {
+            background: rgba(255,255,255,.018);
+            box-shadow: 0 12px 34px rgba(0,0,0,.16);
+        }
+
+        .activity-item:hover {
+            border-color: #ffad1f;
+            background: rgba(255,255,255,.035);
+            box-shadow: 0 12px 34px rgba(0,0,0,.2);
+        }
+
+        .activity-item.active {
+            border-color: #ffad1f;
+            box-shadow: 0 12px 34px rgba(0,0,0,.18), inset 2px 0 0 #ff9800;
+        }
+
+        .activity-status.processing,
+        .activity-status.pending {
+            border-color: rgba(255,173,31,.6);
+            background: rgba(255,255,255,.025);
+            color: #ffca72;
+            box-shadow: none;
+        }
+
+        .activity-status.success {
+            border-color: rgba(53,242,139,.7);
+            background: rgba(255,255,255,.025);
+            color: #45ff98;
+            box-shadow: none;
+        }
+
+        .activity-status.failed,
+        .activity-status.cancelled {
+            border-color: rgba(255,69,85,.72);
+            background: rgba(255,255,255,.025);
+            color: #ff5364;
+            box-shadow: none;
+        }
+
+        .activity-item.active .activity-status::before {
+            animation: none;
+            box-shadow: none;
+        }
+
+        .activity-info-box {
+            background: rgba(255,255,255,.012);
+            box-shadow: none;
+        }
+
+        .activity-info-box:first-child .activity-info-value {
+            color: #ffd18a;
+        }
+
+        .activity-prompt-block {
+            background: rgba(0,0,0,.16);
+            box-shadow: none;
+        }
+
+        .activity-prompt-block.expanded {
+            border-color: #ffad1f;
+            box-shadow: none;
+        }
+
+        .activity-prompt-header {
+            border-bottom-color: rgba(255,152,0,.48);
+            background: rgba(255,255,255,.018);
+        }
+
+        .activity-prompt-toggle {
+            border-color: var(--outline);
+            background: rgba(255,255,255,.025);
+            color: #ffd18a;
+            box-shadow: none;
+        }
+
+        .activity-prompt-toggle:hover {
+            border-color: #ffad1f;
+            background: rgba(255,255,255,.05);
+            box-shadow: none;
+        }
+
+        .activity-prompt-text::after {
+            background: linear-gradient(to bottom, transparent 0%, rgba(12,14,18,.96) 100%);
+        }
+
+        .activity-prompt-block.expanded .activity-prompt-text::-webkit-scrollbar-thumb {
+            background: rgba(255,152,0,.65);
+        }
+
+        .state-box {
+            background: rgba(255,255,255,.018);
+            box-shadow: none;
+        }
+
+        .spinner {
+            border-color: rgba(255,152,0,.24);
+            border-top-color: #ffb52e;
+            box-shadow: none;
+        }
+
+        .back-link:focus-visible,
+        .activity-prompt-toggle:focus-visible,
+        .cancel-generation:focus-visible,
+        .debug-panel-close:focus-visible {
+            outline-color: #ffb52e;
         }
     </style>
 </head>

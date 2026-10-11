@@ -124,12 +124,12 @@
 
             padding:
                 88px
-                28px
-                50px;
+                12px
+                40px;
         }
 
         .provider-content {
-            width: min(1380px, 100%);
+            width: min(1600px, 100%);
             margin: 0 auto;
         }
 
@@ -1178,8 +1178,8 @@
             .provider-main {
                 padding:
                     86px
-                    14px
-                    35px;
+                    6px
+                    28px;
             }
 
             .provider-title {
@@ -1226,6 +1226,176 @@
 
                 min-width: 0;
                 max-width: none;
+            }
+        }
+
+        /* =====================================================
+           BLACK SURFACES / BRIGHT ORANGE BORDERS
+        ====================================================== */
+
+        :root {
+            --provider-orange: #ff9f1c;
+            --provider-orange-bright: #ffb547;
+            --provider-green-bright: #39ff14;
+        }
+
+        .provider-admin-user,
+        .provider-hero,
+        .provider-stat-card,
+        .provider-stat-icon,
+        .provider-panel,
+        .provider-panel-title-icon,
+        .provider-panel-badge,
+        .modal,
+        .modal-close,
+        .form-input,
+        .form-select,
+        .form-textarea,
+        .form-group,
+        .api-toggle,
+        .button-secondary,
+        .message,
+        .provider-list-loading,
+        .provider-list-empty,
+        .provider-list-error {
+            border: 1px solid var(--provider-orange) !important;
+            background: #050505 !important;
+            box-shadow: none;
+        }
+
+        .provider-main {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+
+        .provider-content {
+            width: min(1600px, 100%);
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .provider-hero,
+        .provider-stat-card,
+        .provider-panel,
+        .provider-admin-user,
+        .modal,
+        .message {
+            border: 1px solid var(--provider-orange) !important;
+            background: #050505 !important;
+        }
+
+        .provider-hero::before {
+            background: var(--provider-orange-bright);
+            box-shadow: 0 0 14px rgba(255,159,28,.55);
+        }
+
+        .provider-stats {
+            gap: 10px;
+        }
+
+        #providerList {
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(min(100%, 280px), 1fr)
+                );
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+        }
+
+        #providerList .provider-card {
+            border: 1px solid var(--provider-orange) !important;
+            background: #050505 !important;
+            box-shadow: none !important;
+        }
+
+        #providerList .provider-card:hover {
+            border-color: var(--provider-orange-bright) !important;
+            box-shadow: 0 0 12px rgba(255,159,28,.12) !important;
+        }
+
+        #providerList .provider-card .provider-status,
+        #providerList .provider-card .provider-default-badge,
+        #providerList .provider-card .provider-actions button,
+        .provider-list-error button,
+        .provider-list-empty {
+            border: 1px solid var(--provider-orange) !important;
+            background: #050505 !important;
+        }
+
+        #providerList .provider-card-meta {
+            border-top-color: var(--provider-orange) !important;
+        }
+
+        .provider-panel-header {
+            border-bottom-color: var(--provider-orange) !important;
+        }
+
+        .form-grid {
+            gap: 10px;
+        }
+
+        .form-group {
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus,
+        .modal-close:hover,
+        .api-toggle:hover {
+            border-color: var(--provider-orange-bright) !important;
+            box-shadow: 0 0 0 2px rgba(255,159,28,.16) !important;
+        }
+
+        .modal-header,
+        .modal-footer {
+            border-color: var(--provider-orange) !important;
+        }
+
+        .button-secondary,
+        .button-primary,
+        .add-provider-button {
+            border: 1px solid var(--provider-orange) !important;
+        }
+
+        .button-primary {
+            background: #050505 !important;
+            color: var(--provider-orange-bright) !important;
+            box-shadow: none !important;
+        }
+
+        .add-provider-button {
+            border-color: var(--provider-green-bright) !important;
+            background: var(--provider-green-bright) !important;
+            color: #050505 !important;
+            box-shadow: 0 0 14px rgba(57,255,20,.24) !important;
+        }
+
+        .add-provider-button:hover {
+            border-color: var(--provider-green-bright) !important;
+            background: #58ff38 !important;
+            color: #050505 !important;
+            box-shadow: 0 0 20px rgba(57,255,20,.36) !important;
+        }
+
+        @media (max-width:900px) {
+            .provider-main {
+                padding-right: 8px;
+                padding-left: 8px;
+            }
+        }
+
+        @media (max-width:640px) {
+            .provider-main {
+                padding-right: 6px;
+                padding-left: 6px;
+            }
+
+            #providerList {
+                padding: 8px;
             }
         }
     </style>
