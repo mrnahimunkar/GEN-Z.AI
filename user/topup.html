@@ -1460,10 +1460,12 @@
   let hasPendingTopup = false;
 
   let pendingTopupCheckComplete = false;
+  let pendingTopupRefreshInProgress = false;
   let isSubmittingTopup = false;
   let paymentMethods = [];
   let paymentMethodsLoaded = false;
   let selectedPaymentMethod = "";
+  let paymentMethodImageFailed = false;
 
   const STORAGE_BUCKET = "topup-proofs";
 
@@ -2395,47 +2397,47 @@
       );
     }
 
+    if (pendingTopupRefreshInProgress) {
+      return hasPendingTopup;
+    }
 
+    pendingTopupRefreshInProgress = true;
     pendingTopupCheckComplete = false;
 
     updateSubmitState();
 
+    try {
+      const result =
+        await supabaseClient
+          .from("topup_requests")
+          .select("id")
+          .eq("user_id", currentUser.id)
+          .eq("status", "pending")
+          .limit(1);
 
-    const result =
-      await supabaseClient
-        .from("topup_requests")
-        .select("id")
-        .eq("user_id", currentUser.id)
-        .eq("status", "pending")
-        .limit(1);
+      if (result.error) {
+        throw result.error;
+      }
 
+      hasPendingTopup =
+        Array.isArray(result.data) &&
+        result.data.length > 0;
 
-    if (result.error) {
-      throw result.error;
+      pendingTopupCheckComplete = true;
+
+      const notice =
+        document.getElementById("pendingTopupNotice");
+
+      if (notice) {
+        notice.hidden = !hasPendingTopup;
+      }
+
+      updateSubmitState();
+
+      return hasPendingTopup;
+    } finally {
+      pendingTopupRefreshInProgress = false;
     }
-
-
-    hasPendingTopup =
-      Array.isArray(result.data) &&
-      result.data.length > 0;
-
-    pendingTopupCheckComplete = true;
-
-
-    const notice =
-      document.getElementById(
-        "pendingTopupNotice"
-      );
-
-
-    if (notice) {
-      notice.hidden = !hasPendingTopup;
-    }
-
-
-    updateSubmitState();
-
-    return hasPendingTopup;
   }
 
 
@@ -2458,6 +2460,7 @@
       !pendingTopupCheckComplete ||
       !paymentMethodsLoaded ||
       !selectedPaymentMethod ||
+      paymentMethodImageFailed ||
       isSubmittingTopup;
   }
 
@@ -2475,6 +2478,7 @@
 
     details.replaceChildren();
     details.classList.remove("show");
+    paymentMethodImageFailed = false;
 
     if (!method) {
       return;
@@ -2496,11 +2500,14 @@
       image.loading = "lazy";
       image.referrerPolicy = "no-referrer";
       image.addEventListener("error", function () {
+        paymentMethodImageFailed = true;
         details.replaceChildren();
         const error = document.createElement("div");
         error.className = "payment-detail-value";
         error.textContent = "Gambar QRIS tidak dapat dimuat. Hubungi ADMIN.";
         details.appendChild(error);
+        showMessage("QRIS tidak dapat dimuat. Pengajuan dinonaktifkan sampai ADMIN memperbaiki gambar pembayaran.", "error");
+        updateSubmitState();
       }, { once: true });
       details.appendChild(image);
     } else {
@@ -3611,7 +3618,7 @@
 
 
       if (pendingNotice) {
-        pendingNotice.hidden = false;
+        pendingNotice.hidden = true;
       }
 
 
@@ -3864,6 +3871,24 @@
           handleProofSelection
         );
       }
+
+      const syncPendingTopup = function () {
+        if (
+          document.visibilityState === "visible" &&
+          !isSubmittingTopup
+        ) {
+          refreshPendingTopupStatus().catch(function (error) {
+            console.error(
+              "[GEN-Z.AI] Pending top-up status refresh failed:",
+              error
+            );
+          });
+        }
+      };
+
+      window.addEventListener("focus", syncPendingTopup);
+      document.addEventListener("visibilitychange", syncPendingTopup);
+      window.setInterval(syncPendingTopup, 30000);
 
     } catch (error) {
 

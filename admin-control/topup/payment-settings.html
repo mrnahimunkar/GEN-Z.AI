@@ -49,6 +49,16 @@
             background: #09090a;
         }
         .field input:focus { outline: 2px solid rgba(255, 106, 0, .5); border-color: #ff6a00; }
+        .qr-preview {
+            display: none;
+            width: min(220px, 100%);
+            max-height: 220px;
+            object-fit: contain;
+            padding: 8px;
+            border-radius: 10px;
+            background: #fff;
+        }
+        .qr-preview.show { display: block; }
         .active-control { display: flex; align-items: center; gap: 9px; color: #cbd5e1; font-size: 13px; }
         .active-control input { accent-color: #ff6a00; }
         .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
@@ -89,7 +99,7 @@
             <div id="methodCards" class="methods">
                 <div class="method-card">Memuat pengaturan pembayaran...</div>
             </div>
-            <p class="hint">Metode hanya terlihat oleh pengguna setelah datanya lengkap dan status Aktif dinyalakan. URL gambar QRIS harus HTTPS dan dapat dibuka oleh pengguna.</p>
+            <p class="hint">Metode hanya terlihat oleh pengguna setelah datanya lengkap dan status Aktif dinyalakan. Gambar QRIS akan diunggah ke penyimpanan publik khusus gambar pembayaran.</p>
             <div id="message" class="message" role="status"></div>
         </div>
     </main>
@@ -155,9 +165,11 @@
                     `
                     : `
                         <div class="field">
-                            <label for="${method.id}-qr">URL gambar QRIS (HTTPS)</label>
-                            <input id="${method.id}-qr" name="qr_image_url" type="url" value="${escapeHtml(row.qr_image_url)}" placeholder="https://...">
+                            <label for="${method.id}-qr">Unggah gambar QRIS (JPG, PNG, WEBP; maksimal 5 MB)</label>
+                            <input id="${method.id}-qr" name="qr_image_file" type="file" accept="image/jpeg,image/png,image/webp">
                         </div>
+                        <img class="qr-preview ${row.qr_image_url ? "show" : ""}" data-qr-preview alt="Pratinjau QRIS" src="${escapeHtml(row.qr_image_url)}">
+                        <div class="hint">${row.qr_image_url ? "QRIS tersimpan. Pilih file baru untuk menggantinya." : "Belum ada gambar QRIS yang diunggah."}</div>
                         <div class="field">
                             <label for="${method.id}-name">Nama penerima (opsional)</label>
                             <input id="${method.id}-name" name="account_name" value="${escapeHtml(row.account_name)}" autocomplete="name">
@@ -193,7 +205,9 @@
             const kind = card.dataset.kind;
             const accountNumber = card.querySelector('[name="account_number"]')?.value.trim() || "";
             const accountName = card.querySelector('[name="account_name"]').value.trim();
-            const qrImageUrl = card.querySelector('[name="qr_image_url"]')?.value.trim() || "";
+            const qrFileInput = card.querySelector('[name="qr_image_file"]');
+            const qrFile = qrFileInput?.files?.[0] || null;
+            let qrImageUrl = card.querySelector('[data-qr-preview]')?.getAttribute("src") || "";
             const isActive = card.querySelector('[name="is_active"]').checked;
 
             if (isActive && kind === "bank" && (!accountNumber || !accountName)) {
@@ -201,10 +215,16 @@
                 return;
             }
             if (isActive && kind === "qris") {
-                try {
-                    if (new URL(qrImageUrl).protocol !== "https:") throw new Error("URL harus HTTPS");
-                } catch (error) {
-                    showMessage("Masukkan URL gambar QRIS HTTPS yang valid sebelum mengaktifkan QRIS.", "error");
+                if (!qrImageUrl && !qrFile) {
+                    showMessage("Unggah gambar QRIS sebelum mengaktifkan metode ini.", "error");
+                    return;
+                }
+                if (qrFile && !["image/jpeg", "image/png", "image/webp"].includes(qrFile.type)) {
+                    showMessage("Format QRIS harus JPG, PNG, atau WEBP.", "error");
+                    return;
+                }
+                if (qrFile && qrFile.size > 5 * 1024 * 1024) {
+                    showMessage("Ukuran gambar QRIS maksimal 5 MB.", "error");
                     return;
                 }
             }
@@ -213,7 +233,34 @@
             saving = true;
             button.disabled = true;
             showMessage("Menyimpan pengaturan...", "");
+            let uploadedQrPath = null;
             try {
+                if (kind === "qris" && qrFile) {
+                    const extensionByType = {
+                        "image/jpeg": "jpg",
+                        "image/png": "png",
+                        "image/webp": "webp"
+                    };
+                    uploadedQrPath = "qris/" + Date.now() + "-" +
+                        Math.random().toString(36).slice(2, 10) + "." +
+                        extensionByType[qrFile.type];
+                    const { error: uploadError } = await supabaseClient
+                        .storage
+                        .from("topup-payment-assets")
+                        .upload(uploadedQrPath, qrFile, {
+                            cacheControl: "3600",
+                            contentType: qrFile.type,
+                            upsert: false
+                        });
+                    if (uploadError) throw uploadError;
+
+                    const { data } = supabaseClient
+                        .storage
+                        .from("topup-payment-assets")
+                        .getPublicUrl(uploadedQrPath);
+                    qrImageUrl = data.publicUrl;
+                }
+
                 const { error } = await supabaseClient
                     .from("topup_payment_methods")
                     .upsert({
@@ -230,16 +277,46 @@
                 await loadSettings();
             } catch (error) {
                 console.error("[GEN-Z.AI] Payment method save failed:", error);
-                showMessage(error.message || "Pengaturan pembayaran gagal disimpan.", "error");
+                if (uploadedQrPath) {
+                    const { error: cleanupError } = await supabaseClient
+                        .storage
+                        .from("topup-payment-assets")
+                        .remove([uploadedQrPath]);
+                    if (cleanupError) {
+                        console.error("[GEN-Z.AI] QR upload cleanup failed:", cleanupError);
+                    }
+                }
+                const errorMessage = String(error.message || "");
+                showMessage(
+                    errorMessage.toLowerCase().includes("bucket not found")
+                        ? "Bucket topup-payment-assets belum tersedia. Jalankan supabase/topup-payment-assets.sql di Supabase SQL Editor."
+                        : errorMessage || "Pengaturan pembayaran gagal disimpan.",
+                    "error"
+                );
             } finally {
                 saving = false;
-                button.disabled = false;
+                if (button.isConnected) button.disabled = false;
             }
         }
 
         cards.addEventListener("click", function (event) {
             const button = event.target.closest("[data-save]");
             if (button) saveMethod(button.dataset.save);
+        });
+        cards.addEventListener("change", function (event) {
+            const input = event.target.closest('[name="qr_image_file"]');
+            if (!input) return;
+            const card = input.closest("[data-method]");
+            const preview = card.querySelector("[data-qr-preview]");
+            const file = input.files && input.files[0];
+            if (!file) return;
+            if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 5 * 1024 * 1024) {
+                input.value = "";
+                showMessage("Pilih gambar JPG, PNG, atau WEBP maksimal 5 MB.", "error");
+                return;
+            }
+            preview.src = URL.createObjectURL(file);
+            preview.classList.add("show");
         });
 
         document.getElementById("backButton").addEventListener("click", function () {
