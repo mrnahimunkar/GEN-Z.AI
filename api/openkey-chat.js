@@ -715,10 +715,45 @@ function decryptAesGcm(
 
 
 /* =========================================================
+   ENVIRONMENT FALLBACK
+========================================================= */
+
+export function getOpenKeyApiKeyFromEnvironment() {
+
+    const apiKey =
+        String(
+            process.env.OPENKEY_API_KEY || ""
+        ).trim();
+
+    if (
+        !apiKey
+    ) {
+
+        return null;
+
+    }
+
+    return apiKey;
+
+}
+
+
+/* =========================================================
    LOAD PROVIDER API KEY
 ========================================================= */
 
 async function loadOpenKeyApiKey() {
+
+    const environmentApiKey =
+        getOpenKeyApiKeyFromEnvironment();
+
+    if (
+        environmentApiKey
+    ) {
+
+        return environmentApiKey;
+
+    }
 
     const params =
         new URLSearchParams();
@@ -910,6 +945,21 @@ async function loadOpenKeyApiKey() {
         return apiKey.trim();
 
     } catch (error) {
+
+        const environmentApiKey =
+            getOpenKeyApiKeyFromEnvironment();
+
+        if (
+            environmentApiKey
+        ) {
+
+            console.warn(
+                "[openkey-chat] Encrypted OpenKey credential failed to decrypt; using OPENKEY_API_KEY fallback."
+            );
+
+            return environmentApiKey;
+
+        }
 
         console.error(
             "[openkey-chat] Credential decryption failed:",
