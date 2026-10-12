@@ -2828,6 +2828,280 @@
 
     }
 
+}
+
+    /* =========================================================
+       BLACK + ORANGE LAYOUT
+    ========================================================= */
+
+    .vision-video-page {
+        padding: clamp(18px, 2.4vw, 36px) clamp(12px, 2vw, 30px) 48px;
+        background: #000;
+    }
+
+    .vision-video-page::before {
+        background:
+            radial-gradient(
+                ellipse 850px 420px at 50% 0%,
+                rgba(255, 145, 0, .08) 0%,
+                transparent 72%
+            ),
+            linear-gradient(180deg, #000, #030303);
+    }
+
+    .vision-video-page::after {
+        background:
+            linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 145, 0, .8),
+                rgba(255, 185, 65, .95),
+                rgba(255, 145, 0, .8),
+                transparent
+            );
+        box-shadow: 0 0 18px rgba(255, 145, 0, .3);
+    }
+
+    .vision-video-hero,
+    .vision-video-main-grid {
+        width: 100%;
+        max-width: none;
+    }
+
+    .vision-video-hero {
+        margin-bottom: clamp(14px, 1.8vw, 22px);
+        border-color: rgba(255, 166, 40, .92);
+        background: #030303;
+        box-shadow: 0 16px 38px rgba(0, 0, 0, .48);
+    }
+
+    .vision-video-hero::before,
+    .vision-video-hero::after,
+    .vision-video-card::before {
+        background: linear-gradient(90deg, transparent, #ff9800, #ffc266, #ff9800, transparent);
+        box-shadow: 0 0 14px rgba(255, 145, 0, .34);
+    }
+
+    .vision-video-eyebrow,
+    .vision-video-credit-badge,
+    .vision-video-card,
+    .vision-video-dropzone,
+    .vision-video-upload-icon,
+    .vision-video-secondary-button,
+    .vision-video-remove-button,
+    .vision-video-player-wrapper,
+    .vision-video-file-info > div,
+    .vision-video-form-group select,
+    .vision-video-form-group textarea,
+    .vision-video-credit-notice,
+    .vision-video-status,
+    .vision-video-prompt-container,
+    .vision-video-analysis-result,
+    .vision-video-structure-item,
+    .vision-video-info-card,
+    .vision-video-info-icon,
+    .vision-video-copy-button {
+        border-color: rgba(255, 153, 0, .82);
+        background-color: #030303;
+    }
+
+    .vision-video-card {
+        border-color: rgba(255, 166, 40, .92);
+        padding: clamp(16px, 1.6vw, 23px);
+        background: #030303;
+        box-shadow: 0 16px 38px rgba(0, 0, 0, .48);
+    }
+
+    .vision-video-card.is-processing,
+    .vision-video-card.is-success,
+    .vision-video-card.is-error {
+        border-color: rgba(255, 166, 40, .92);
+        box-shadow: 0 16px 38px rgba(0, 0, 0, .48);
+    }
+
+    .vision-video-card-eyebrow,
+    .vision-video-eyebrow,
+    .vision-video-upload-icon,
+    .vision-video-info-icon,
+    .vision-video-copy-button {
+        color: #ffc266;
+    }
+
+    .vision-video-hero h1::after {
+        background: linear-gradient(90deg, #ff9800, #ffc266, transparent);
+        box-shadow: 0 0 12px rgba(255, 145, 0, .48);
+    }
+
+    .vision-video-dropzone {
+        min-height: 300px;
+        background: #000;
+    }
+
+    .vision-video-dropzone:hover,
+    .vision-video-dropzone.is-dragover {
+        border-color: #ffc266;
+        background: #080500;
+        box-shadow: inset 0 0 36px rgba(255, 145, 0, .07), 0 0 22px rgba(255, 145, 0, .08);
+    }
+
+    .vision-video-upload-icon,
+    .vision-video-info-icon {
+        background: #080500;
+    }
+
+    .vision-video-secondary-button:hover,
+    .vision-video-remove-button:hover,
+    .vision-video-copy-button:hover:not(:disabled) {
+        border-color: #ffc266;
+        background: #100900;
+        box-shadow: 0 0 16px rgba(255, 145, 0, .12);
+    }
+
+    .vision-video-primary-button {
+        border-color: #ff9800;
+        background: linear-gradient(135deg, #ffab24, #df7900);
+        color: #160b00;
+        box-shadow: 0 10px 28px rgba(255, 145, 0, .18);
+    }
+
+    .vision-video-primary-button:hover:not(:disabled) {
+        border-color: #ffd080;
+        background: linear-gradient(135deg, #ffc266, #f08a00);
+        box-shadow: 0 14px 34px rgba(255, 145, 0, .22);
+    }
+
+    .vision-video-progress-bar {
+        background: linear-gradient(90deg, #db7600, #ffc266);
+        box-shadow: 0 0 10px rgba(255, 145, 0, .42);
+    }
+
+    .vision-video-form-group > label::before {
+        background: linear-gradient(180deg, #ffc266, #ff9800);
+        box-shadow: 0 0 8px rgba(255, 145, 0, .35);
+    }
+
+    .vision-video-form-group select:focus,
+    .vision-video-form-group textarea:focus {
+        border-color: #ffc266;
+        background: #080500;
+        box-shadow: 0 0 0 3px rgba(255, 145, 0, .08), 0 0 16px rgba(255, 145, 0, .1);
+    }
+
+    .vision-video-prompt-container,
+    .vision-video-analysis-result,
+    .vision-video-structure-item,
+    .vision-video-info-card,
+    .vision-video-file-info > div,
+    .vision-video-status,
+    .vision-video-credit-notice {
+        background: #000;
+    }
+
+    .vision-video-prompt-container,
+    .vision-video-analysis-result,
+    .vision-video-structure-item,
+    .vision-video-info-card,
+    .vision-video-file-info > div {
+        border-color: rgba(255, 153, 0, .74);
+    }
+
+    .vision-video-secondary-button,
+    .vision-video-remove-button,
+    .vision-video-copy-button {
+        border-style: solid;
+        border-width: 1px;
+    }
+
+    .vision-video-secondary-button {
+        border-color: rgba(255, 153, 0, .78);
+        background: #050505;
+    }
+
+    .vision-video-status-indicator {
+        background: #ffab24;
+        box-shadow: 0 0 10px rgba(255, 165, 40, .6);
+    }
+
+    .vision-video-progress {
+        background: rgba(255, 255, 255, .12);
+    }
+
+    .vision-video-secondary-button:focus-visible,
+    .vision-video-primary-button:focus-visible,
+    .vision-video-remove-button:focus-visible,
+    .vision-video-copy-button:focus-visible,
+    .vision-video-field select:focus-visible,
+    .vision-video-field textarea:focus-visible,
+    #visionVideoSettingsCard .vision-video-form-group select:focus-visible,
+    #visionVideoSettingsCard .vision-video-form-group textarea:focus-visible {
+        outline-color: #ffc266;
+    }
+
+    @media (max-width: 1100px) {
+        .vision-video-page {
+            padding-inline: 20px;
+        }
+
+        .vision-video-main-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 16px;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .vision-video-page {
+            padding: 16px 12px 32px;
+        }
+
+        .vision-video-hero {
+            padding: 20px 16px;
+        }
+
+        .vision-video-main-grid,
+        .vision-video-left-column,
+        .vision-video-right-column {
+            gap: 12px;
+        }
+
+        .vision-video-card,
+        #visionVideoSettingsCard {
+            padding: 16px;
+            border-radius: 15px;
+        }
+
+        .vision-video-dropzone {
+            min-height: 230px;
+        }
+
+        .vision-video-info-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 430px) {
+        .vision-video-page {
+            padding-inline: 9px;
+        }
+
+        .vision-video-hero {
+            padding: 16px 12px;
+        }
+
+        .vision-video-card,
+        #visionVideoSettingsCard {
+            padding: 12px;
+        }
+
+        .vision-video-hero h1 {
+            font-size: clamp(24px, 7vw, 30px);
+        }
+
+        .vision-video-info-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+@media (max-width: 430px) {
 
     .vision-video-hero {
 
