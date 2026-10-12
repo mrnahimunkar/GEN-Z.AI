@@ -417,3 +417,190 @@
             9px;
     }
 }
+
+/* =========================================================
+   BLACK + ORANGE LAYOUT
+========================================================= */
+
+:root {
+    --vision-bg: #000;
+    --vision-surface: #030303;
+    --vision-surface-2: #080808;
+    --vision-line: rgba(255, 153, 0, .78);
+    --vision-red: #ff9800;
+    --vision-red-2: #ffb020;
+    --vision-red-soft: rgba(255, 145, 0, .12);
+}
+
+.vision-page {
+    width: 100%;
+    max-width: none;
+    padding: clamp(20px, 2.5vw, 36px) clamp(12px, 2vw, 30px) 48px;
+    background: #000;
+}
+
+.vision-page::before,
+.vision-page::after {
+    opacity: .08;
+}
+
+.vision-page::before {
+    background: rgba(255, 145, 0, .28);
+}
+
+.vision-page::after {
+    background: rgba(255, 176, 32, .16);
+}
+
+.vision-hero,
+.vision-card,
+.vision-info-card {
+    border: 1px solid rgba(255, 166, 40, .9);
+    background: #030303;
+    box-shadow: 0 16px 38px rgba(0, 0, 0, .45);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.vision-card.is-processing,
+.vision-card.is-success,
+.vision-card.is-error {
+    border-color: rgba(255, 166, 40, .9);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, .45);
+}
+
+.vision-hero {
+    width: 100%;
+    padding: clamp(22px, 3vw, 40px);
+}
+
+.vision-hero::before,
+.vision-card::before {
+    background: linear-gradient(90deg, transparent, #ff9800, transparent);
+}
+
+.vision-main-grid {
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+    gap: clamp(14px, 1.8vw, 24px);
+}
+
+.vision-left-column,
+.vision-right-column {
+    gap: clamp(14px, 1.8vw, 22px);
+}
+
+.vision-credit-badge,
+.vision-dropzone,
+.vision-preview-image-wrap,
+.vision-form-grid,
+.vision-prompt-output,
+.vision-prompt-result,
+.vision-analysis-card,
+.vision-analysis-result,
+.vision-placeholder-icon,
+.vision-credit-notice,
+.vision-info-card,
+.vision-field input,
+.vision-field select,
+.vision-field textarea,
+.vision-status,
+.vision-progress-track {
+    border-color: rgba(255, 153, 0, .68);
+    background-color: #050505;
+}
+
+.vision-credit-badge {
+    background: #050505;
+}
+
+.vision-prompt-output,
+.vision-prompt-result,
+.vision-preview-image-wrap,
+.vision-analysis-card,
+.vision-analysis-result,
+.vision-credit-notice {
+    background: #000;
+}
+
+.vision-placeholder-icon {
+    color: #ffc266;
+}
+
+.vision-info-grid {
+    gap: clamp(10px, 1.4vw, 16px);
+}
+
+.vision-info-card {
+    min-width: 0;
+}
+
+.vision-primary-button {
+    border-color: #ff9800;
+    background: linear-gradient(135deg, #ff9800, #d97700);
+    color: #160b00;
+}
+
+.vision-primary-button:hover {
+    border-color: #ffc266;
+    background: linear-gradient(135deg, #ffb020, #ed8500);
+}
+
+.vision-primary-button:hover:not(:disabled) {
+    border-color: #ffc266;
+    background: linear-gradient(135deg, #ffb020, #ed8500);
+}
+
+.vision-credit-badge.is-low,
+.vision-credit-badge.is-empty {
+    border-color: rgba(255, 166, 40, .9);
+    box-shadow: none;
+}
+
+@media (max-width: 1100px) {
+    .vision-page {
+        width: 100%;
+        padding-inline: 20px;
+    }
+
+    .vision-main-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 760px) {
+    .vision-page {
+        padding: 16px 12px 32px;
+    }
+
+    .vision-hero {
+        padding: 20px 16px;
+        border-radius: 16px;
+    }
+
+    .vision-subtitle {
+        font-size: 12px;
+    }
+
+    .vision-card {
+        border-radius: 16px;
+    }
+
+    .vision-info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 420px) {
+    .vision-page {
+        padding-inline: 9px;
+    }
+
+    .vision-hero,
+    .vision-action-card {
+        padding: 16px;
+    }
+
+    .vision-info-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
