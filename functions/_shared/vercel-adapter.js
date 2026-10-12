@@ -125,7 +125,14 @@ function createResponseAdapter(request) {
             return ended;
         },
         setHeader(name, value) {
-            headers.set(name, Array.isArray(value) ? value.join(", ") : String(value));
+            if (String(name).toLowerCase() === "set-cookie" && Array.isArray(value)) {
+                headers.delete("set-cookie");
+                for (const cookie of value) {
+                    headers.append("set-cookie", String(cookie));
+                }
+            } else {
+                headers.set(name, Array.isArray(value) ? value.join(", ") : String(value));
+            }
             return response;
         },
         getHeader(name) {

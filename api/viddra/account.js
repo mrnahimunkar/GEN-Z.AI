@@ -1012,7 +1012,8 @@ async function handleCreateApiKey(
 
         const apiKeyCookie =
             createVidDraApiKeyCookie(
-                apiKey
+                apiKey,
+                req
             );
 
 
@@ -1650,7 +1651,8 @@ console.info(
 
 const sessionCookie =
     createVidDraSessionCookie(
-        vidDraToken
+        vidDraToken,
+        req
     );
 
 
