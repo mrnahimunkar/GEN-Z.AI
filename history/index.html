@@ -1524,7 +1524,136 @@ td:nth-child(9) { grid-column: 6; grid-row: 1 / span 3; }
         padding: 3px 7px;
     }
 }
-   
+
+/* =========================================================
+   BLACK + ORANGE LAYOUT
+========================================================= */
+:root {
+    --surface: #030303;
+    --surface-hi: #080808;
+    --line: rgba(255, 145, 0, .48);
+    --line-hi: rgba(255, 166, 40, .92);
+    --gutter-x: clamp(12px, 2vw, 32px);
+    --gutter-y: clamp(18px, 2.4vw, 36px);
+}
+
+body {
+    background: #000;
+}
+
+.main {
+    width: 100%;
+    max-width: none;
+    padding-inline: var(--gutter-x);
+}
+
+.hero,
+.stat,
+.history-section,
+tbody tr,
+.empty-state,
+.modal-card {
+    background: #030303;
+    border: 1px solid var(--line-hi);
+    border-radius: var(--r-lg);
+}
+
+.hero {
+    align-items: center;
+    padding: clamp(18px, 2.4vw, 32px);
+}
+
+.hero-content {
+    min-width: 0;
+}
+
+.history-section {
+    padding: clamp(14px, 2vw, 26px);
+}
+
+.stat {
+    transition: border-color .25s var(--ease), transform .25s var(--ease);
+}
+
+.stat:hover,
+tbody tr:hover {
+    border-color: #ffb84d;
+}
+
+tbody tr {
+    background: #030303;
+}
+
+.filter-button,
+.refresh-button,
+.view-button,
+.pagination-btn,
+.per-page-select,
+.close-button,
+.detail-value.prompt-detail,
+.detail-value.prompt,
+.detail-value[data-field="prompt"],
+.detail-video-preview,
+.history-thumbnail,
+.empty-icon {
+    border-color: var(--line-hi);
+}
+
+.pagination-toolbar,
+.pagination {
+    border-color: var(--line-hi);
+}
+
+.modal-card,
+.modal-header {
+    background: #030303;
+}
+
+.detail-row {
+    border-color: var(--line);
+}
+
+@media (max-width: 860px) {
+    .hero {
+        padding: 20px;
+    }
+
+    .history-section {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 560px) {
+    .main {
+        padding: var(--gutter-y) var(--gutter-x) 24px;
+    }
+
+    .hero {
+        gap: 18px;
+        padding: 18px;
+    }
+
+    .stats {
+        gap: 10px;
+    }
+
+    .history-section {
+        padding: 12px;
+    }
+
+    .section-head {
+        align-items: stretch;
+    }
+
+    .refresh-button {
+        justify-content: center;
+    }
+
+    .empty-state {
+        padding: 48px 16px;
+    }
+}
+
 </style>
 
 <!-- ===== UPSCALE BUTTON — CSS ===== -->
