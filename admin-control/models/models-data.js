@@ -53,7 +53,7 @@
 ========================================================= */
 
 const MODEL_DATA_VERSION =
-    "2026-09-27-provider-resolution-v4";
+    "2026-10-12-motiongen-seedance-v5";
 
 
 /* =========================================================
@@ -77,6 +77,12 @@ import motiongenConfig
 
 import motiongenParameters
     from "../../models/digital-human-lipsync-image/parameters.js?v=models-registry-20261011";
+
+import motiongenSeedanceConfig
+    from "../../models/seedance-25-studio-s14/config.js?v=models-registry-20261012";
+
+import motiongenSeedanceParameters
+    from "../../models/seedance-25-studio-s14/parameters.js?v=models-registry-20261012";
 
 
 /* =========================================================
@@ -127,6 +133,16 @@ const MODEL_REGISTRY = [
 
         parameters:
             motiongenParameters
+    },
+    {
+        folder:
+            "models/seedance-25-studio-s14",
+
+        config:
+            motiongenSeedanceConfig,
+
+        parameters:
+            motiongenSeedanceParameters
     }
 
 ];

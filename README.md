@@ -78,6 +78,14 @@ Credit diambil dari kolom:
 | `grok-imagine/image-to-video` | Grok Imagine Image to Video | image-to-video | KIE.AI |
 | `bytedance/seedance-2-5` | Seedance 2.5 | text-to-video | KIE.AI |
 | `digital-human-lipsync-image` | Digital Human - LipSync Image | image-to-video | Motiongen-AI |
+| `seedance-25-studio-s14` | Seedance 2.5 (30s) | text-to-video | Motiongen-AI |
+
+Untuk mengaktifkan Seedance Motiongen, jalankan
+`supabase/seedance-25-studio-failure-refund.sql` di Supabase SQL Editor,
+lalu buat/aktifkan model `seedance-25-studio-s14` di Admin Models dengan
+provider `motiongen` dan harga `6` pada ketiga tier kredit. Refund kredit
+GEN-Z.AI untuk job yang gagal diproses setelah antrean ditangani secara
+idempoten oleh endpoint status.
 
 Setiap model memiliki folder sendiri di `models/` dengan struktur:
 
@@ -178,6 +186,8 @@ provider sudah diuji di Cloudflare.
 3. Untuk indikator online lintas perangkat pada dashboard admin, jalankan
    `supabase/user-presence.sql` di Supabase SQL Editor. Sesi mengirim heartbeat
    setiap 20 detik; akun dianggap offline setelah 90 detik tanpa heartbeat.
+   Untuk auto-refund job Motiongen Seedance yang gagal, jalankan juga
+   `supabase/seedance-25-studio-failure-refund.sql` sebelum mengaktifkan model.
 4. Tambahkan environment variables dan secrets pada pengaturan Worker,
    termasuk Preview jika digunakan:
    `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_ANON_KEY` (atau

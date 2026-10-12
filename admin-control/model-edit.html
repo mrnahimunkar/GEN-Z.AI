@@ -2870,6 +2870,28 @@
     }
 
 
+    function isMotiongenLipSyncModel(model = null) {
+
+        const source =
+            model ||
+            currentRegistryModel ||
+            currentModel ||
+            {};
+
+        const modelId =
+            String(
+                source?.model_id ||
+                source?.id ||
+                source?.config?.id ||
+                ""
+            )
+                .trim()
+                .toLowerCase();
+
+        return modelId === MOTIONGEN_MODEL_ID;
+    }
+
+
     /* =========================================================
        MOTIONGEN RESOLUTION NORMALIZER
        ---------------------------------------------------------
@@ -2915,11 +2937,17 @@
                 value
             );
 
-        if (normalized === "480p") {
+        if (
+            normalized === "480p" &&
+            isMotiongenLipSyncModel()
+        ) {
             return "576P";
         }
 
-        if (normalized === "720p") {
+        if (
+            normalized === "720p" &&
+            isMotiongenLipSyncModel()
+        ) {
             return "720P HD";
         }
 
@@ -4015,12 +4043,16 @@
 
             if (title480) {
                 title480.textContent =
-                    "576P";
+                    isMotiongenLipSyncModel(currentModel)
+                        ? "576P"
+                        : "480P";
             }
 
             if (title720) {
                 title720.textContent =
-                    "720P HD";
+                    isMotiongenLipSyncModel(currentModel)
+                        ? "720P HD"
+                        : "720P";
             }
 
         }
@@ -4055,7 +4087,9 @@
         if (credit480Label) {
 
             credit480Label.textContent =
-                "Credit 576P";
+                isMotiongenLipSyncModel(currentModel)
+                    ? "Credit 576P"
+                    : "Credit 480P";
 
         }
 
@@ -4063,7 +4097,9 @@
         if (credit720Label) {
 
             credit720Label.textContent =
-                "Credit 720P HD";
+                isMotiongenLipSyncModel(currentModel)
+                    ? "Credit 720P HD"
+                    : "Credit 720P";
 
         }
 
@@ -4082,7 +4118,9 @@
         if (credit480Help) {
 
             credit480Help.textContent =
-                "Credit yang digunakan untuk resolution 576P.";
+                isMotiongenLipSyncModel(currentModel)
+                    ? "Credit yang digunakan untuk resolution 576P."
+                    : "Credit yang digunakan untuk resolution 480P.";
 
         }
 
@@ -4090,7 +4128,9 @@
         if (credit720Help) {
 
             credit720Help.textContent =
-                "Credit yang digunakan untuk resolution 720P HD.";
+                isMotiongenLipSyncModel(currentModel)
+                    ? "Credit yang digunakan untuk resolution 720P HD."
+                    : "Credit yang digunakan untuk resolution 720P.";
 
         }
 

@@ -53,6 +53,9 @@ import seedance25
 import digitalHumanLipSyncImage
     from "../models/digital-human-lipsync-image/index.js";
 
+import seedance25StudioMotiongen
+    from "../models/seedance-25-studio-s14/index.js";
+
 import klingMotionControl30Pro
     from "../models/kling-motion-control-30-pro/index.js";
 
@@ -64,8 +67,11 @@ const MODEL_REGISTRY = [
     grokImagineImageToVideo,
     seedance25,
     digitalHumanLipSyncImage,
+    seedance25StudioMotiongen,
     klingMotionControl30Pro
 ];
+
+const SEEDANCE_STUDIO_MODEL_ID = "seedance-25-studio-s14";
 
 
 const COMPLETED_STATES = new Set([
@@ -2322,6 +2328,27 @@ async function findGenerationHistory(
 }
 
 
+async function refundFailedGenerationCredits(
+    userId,
+    taskId
+) {
+    const result = await supabaseRequest(
+        "/rest/v1/rpc/refund_failed_generation_credits",
+        {
+            method: "POST",
+            body: JSON.stringify({
+                p_user_id: userId,
+                p_task_id: taskId
+            })
+        }
+    );
+
+    return Array.isArray(result)
+        ? result[0] || null
+        : result;
+}
+
+
 /* =========================================================
    AUTO-FAIL STALE HISTORY
    ---------------------------------------------------------
@@ -2413,6 +2440,22 @@ async function autoFailStaleHistory(
                     })
             }
         );
+
+        if (
+            history.model_id === SEEDANCE_STUDIO_MODEL_ID
+        ) {
+            try {
+                await refundFailedGenerationCredits(
+                    userId,
+                    taskId
+                );
+            } catch (refundError) {
+                console.error(
+                    "[generate-status] Stale task credit refund failed:",
+                    serializeError(refundError)
+                );
+            }
+        }
 
 
         console.info(
@@ -4385,6 +4428,24 @@ export default async function handler(
                 normalized
             );
 
+        let creditRefund = null;
+        if (
+            normalized.failed &&
+            modelId === SEEDANCE_STUDIO_MODEL_ID
+        ) {
+            try {
+                creditRefund = await refundFailedGenerationCredits(
+                    user.id,
+                    taskId
+                );
+            } catch (refundError) {
+                console.error(
+                    "[generate-status] Failed task credit refund failed:",
+                    serializeError(refundError)
+                );
+            }
+        }
+
 
         return json(
             res,
@@ -4438,6 +4499,12 @@ export default async function handler(
 
                 failed:
                     normalized.failed,
+
+                credit_refunded:
+                    Boolean(creditRefund?.refunded),
+
+                refunded_credit:
+                    creditRefund?.amount ?? 0,
 
                 has_result:
                     normalized.result_urls.length >
