@@ -1,4 +1,3 @@
-//model-edit?v=1.1
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -1744,195 +1743,6 @@
                 width: 100%;
             }
         }
-
-        :root {
-            --model-edit-orange: #ff9f1c;
-            --model-edit-orange-bright: #ffb547;
-            --model-edit-green: #39ff14;
-            --model-edit-red: #ff3030;
-        }
-
-        body {
-            padding-left: 0 !important;
-        }
-
-        .app {
-            margin-left: var(--genz-sidebar-width, 248px);
-        }
-
-        .main {
-            width: auto;
-            min-width: 0;
-            margin-left: 0;
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-
-        .content {
-            width: min(1600px, 100%);
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-        .page-header {
-            padding-left: 0;
-        }
-
-        .model-hero,
-        .form-card,
-        .alert,
-        .currency-preview-box,
-        .resolution-price-box,
-        .price-box,
-        .credit-info,
-        .parameter-card,
-        .resolution-option-label,
-        .status-box,
-        .readonly-value,
-        .loading {
-            border: 1px solid var(--model-edit-orange) !important;
-            background: #050505 !important;
-            box-shadow: none !important;
-        }
-
-        .model-hero,
-        .form-card {
-            border-color: var(--model-edit-orange) !important;
-            background: #050505 !important;
-        }
-
-        .model-hero::before,
-        .form-card::before {
-            display: none;
-        }
-
-        .model-hero:hover,
-        .form-card:hover {
-            border-color: var(--model-edit-orange-bright) !important;
-            background: #050505 !important;
-            box-shadow: 0 0 12px rgba(255,159,28,.12) !important;
-        }
-
-        .eyebrow,
-        .premium-badge,
-        .back-button,
-        .nav-toggle,
-        .logout {
-            border: 1px solid var(--model-edit-orange) !important;
-            background: #050505 !important;
-            box-shadow: none !important;
-        }
-
-        .field input,
-        .field textarea,
-        .field select,
-        .readonly-value {
-            border: 1px solid var(--model-edit-orange) !important;
-            background: #050505 !important;
-        }
-
-        .field input:focus,
-        .field textarea:focus,
-        .field select:focus,
-        .resolution-option-label:hover,
-        .resolution-option input:checked + .resolution-option-label {
-            border-color: var(--model-edit-orange-bright) !important;
-            background: #050505 !important;
-            box-shadow: 0 0 0 2px rgba(255,159,28,.16) !important;
-        }
-
-        .resolution-option-check {
-            border: 1px solid var(--model-edit-orange) !important;
-            background: #050505 !important;
-        }
-
-        .resolution-option input:checked
-        + .resolution-option-label
-        .resolution-option-check {
-            border-color: var(--model-edit-orange-bright) !important;
-            background: var(--model-edit-orange-bright) !important;
-            color: #050505 !important;
-            box-shadow: none !important;
-        }
-
-        .status-box .slider {
-            border: 1px solid var(--model-edit-orange) !important;
-            background: #151515 !important;
-        }
-
-        .status-box .switch input:checked + .slider {
-            border-color: var(--model-edit-green) !important;
-            background: var(--model-edit-green) !important;
-            box-shadow: 0 0 12px rgba(57,255,20,.24) !important;
-        }
-
-        .back-button:hover,
-        .nav-toggle:hover,
-        .logout:hover {
-            border-color: var(--model-edit-orange-bright) !important;
-            color: var(--model-edit-orange-bright) !important;
-            background: #111 !important;
-        }
-
-        #saveButton {
-            border: 1px solid var(--model-edit-green) !important;
-            color: #050505 !important;
-            background: var(--model-edit-green) !important;
-            box-shadow: 0 0 14px rgba(57,255,20,.24) !important;
-        }
-
-        #saveButton:hover {
-            border-color: var(--model-edit-green) !important;
-            background: #58ff38 !important;
-            box-shadow: 0 0 20px rgba(57,255,20,.36) !important;
-        }
-
-        #saveButton:disabled {
-            opacity: .55;
-            color: #050505 !important;
-            background: var(--model-edit-green) !important;
-        }
-
-        #cancelButton {
-            border: 1px solid var(--model-edit-red) !important;
-            color: #fff !important;
-            background: var(--model-edit-red) !important;
-            box-shadow: none !important;
-        }
-
-        #cancelButton:hover {
-            border-color: #ff5a5a !important;
-            background: #ff4545 !important;
-        }
-
-        @media (max-width: 900px) {
-            .main {
-                margin-left: 0;
-                padding-right: 8px;
-                padding-left: 8px;
-            }
-        }
-
-        @media (max-width: 720px) {
-            .app {
-                margin-left: 0;
-            }
-
-            .main {
-                padding-right: 6px;
-                padding-left: 6px;
-            }
-
-            .page-header {
-                padding-left: 52px;
-            }
-        }
-
-        @media (min-width: 721px) and (max-width: 768px) {
-            .app {
-                margin-left: 0;
-            }
-        }
     </style>
 </head>
 
@@ -2653,7 +2463,7 @@
      - Redirect
 ====================================================== -->
 
-<script src="/navigation/navigation.js?v=presence-20261010"></script>
+<script src="/navigation/navigation.js"></script>
 
 
 <!-- =========================================================
@@ -2870,28 +2680,6 @@
     }
 
 
-    function isMotiongenLipSyncModel(model = null) {
-
-        const source =
-            model ||
-            currentRegistryModel ||
-            currentModel ||
-            {};
-
-        const modelId =
-            String(
-                source?.model_id ||
-                source?.id ||
-                source?.config?.id ||
-                ""
-            )
-                .trim()
-                .toLowerCase();
-
-        return modelId === MOTIONGEN_MODEL_ID;
-    }
-
-
     /* =========================================================
        MOTIONGEN RESOLUTION NORMALIZER
        ---------------------------------------------------------
@@ -2937,17 +2725,11 @@
                 value
             );
 
-        if (
-            normalized === "480p" &&
-            isMotiongenLipSyncModel()
-        ) {
+        if (normalized === "480p") {
             return "576P";
         }
 
-        if (
-            normalized === "720p" &&
-            isMotiongenLipSyncModel()
-        ) {
+        if (normalized === "720p") {
             return "720P HD";
         }
 
@@ -4043,16 +3825,12 @@
 
             if (title480) {
                 title480.textContent =
-                    isMotiongenLipSyncModel(currentModel)
-                        ? "576P"
-                        : "480P";
+                    "576P";
             }
 
             if (title720) {
                 title720.textContent =
-                    isMotiongenLipSyncModel(currentModel)
-                        ? "720P HD"
-                        : "720P";
+                    "720P HD";
             }
 
         }
@@ -4087,9 +3865,7 @@
         if (credit480Label) {
 
             credit480Label.textContent =
-                isMotiongenLipSyncModel(currentModel)
-                    ? "Credit 576P"
-                    : "Credit 480P";
+                "Credit 576P";
 
         }
 
@@ -4097,9 +3873,7 @@
         if (credit720Label) {
 
             credit720Label.textContent =
-                isMotiongenLipSyncModel(currentModel)
-                    ? "Credit 720P HD"
-                    : "Credit 720P";
+                "Credit 720P HD";
 
         }
 
@@ -4118,9 +3892,7 @@
         if (credit480Help) {
 
             credit480Help.textContent =
-                isMotiongenLipSyncModel(currentModel)
-                    ? "Credit yang digunakan untuk resolution 576P."
-                    : "Credit yang digunakan untuk resolution 480P.";
+                "Credit yang digunakan untuk resolution 576P.";
 
         }
 
@@ -4128,9 +3900,7 @@
         if (credit720Help) {
 
             credit720Help.textContent =
-                isMotiongenLipSyncModel(currentModel)
-                    ? "Credit yang digunakan untuk resolution 720P HD."
-                    : "Credit yang digunakan untuk resolution 720P.";
+                "Credit yang digunakan untuk resolution 720P HD.";
 
         }
 
